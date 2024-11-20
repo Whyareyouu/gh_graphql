@@ -1,24 +1,24 @@
 import { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
-  schema: [
-    {
-      "https://api.github.com/graphql": {
-        headers: {
-          "User-Agent": "Whyareyouu",
-          Authorization: `Bearer ${process.env.GITHUB_ACCESS_TOKEN ?? ""}`,
-        },
-      },
-    },
-  ],
-  documents: ["src/graphql/documents/**/*.{ts,tsx}"],
+  schema: "https://graphql.anilist.co",
+  documents: ["src/graphql/documents/**/*.gql"],
   generates: {
-    "./src/graphql/requests/__generated__.ts": {
-      preset: "client",
+    "./src/graphql/hooks/__generated__.ts": {
       plugins: [
         "typescript",
         "typescript-operations",
         "typescript-react-apollo",
+      ],
+      presetConfig: {
+        gqlTagName: "gql",
+      },
+    },
+    "./src/graphql/requests/__generated__.ts": {
+      plugins: [
+        "typescript",
+        "typescript-operations",
+        "typescript-graphql-request",
       ],
       presetConfig: {
         gqlTagName: "gql",
