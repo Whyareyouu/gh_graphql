@@ -2,7 +2,7 @@ import { CodegenConfig } from "@graphql-codegen/cli";
 
 const config: CodegenConfig = {
   schema: "https://graphql.anilist.co",
-  documents: ["src/graphql/documents/**/*.gql"],
+  documents: ["./src/graphql/documents/**/*.ts"],
   generates: {
     "./src/graphql/hooks/__generated__.ts": {
       plugins: [
@@ -10,9 +10,6 @@ const config: CodegenConfig = {
         "typescript-operations",
         "typescript-react-apollo",
       ],
-      presetConfig: {
-        gqlTagName: "gql",
-      },
     },
     "./src/graphql/requests/__generated__.ts": {
       plugins: [
@@ -20,9 +17,6 @@ const config: CodegenConfig = {
         "typescript-operations",
         "typescript-graphql-request",
       ],
-      presetConfig: {
-        gqlTagName: "gql",
-      },
     },
   },
   ignoreNoDocuments: true,
