@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { ApolloClientProvider } from "@/utils";
+import { Layout } from "@/components/ui/layout";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,7 +16,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ApolloClientProvider>{children}</ApolloClientProvider>
+        <ApolloClientProvider>
+          <Layout>{children}</Layout>
+        </ApolloClientProvider>
       </body>
     </html>
   );
