@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { ApolloClientProvider } from "@/utils";
+import { ApolloClientProvider, ThemeProvider } from "@/utils";
 import { Layout } from "@/components/ui/layout";
 
 export const metadata: Metadata = {
@@ -14,10 +14,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
         <ApolloClientProvider>
-          <Layout>{children}</Layout>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="dark"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Layout>{children}</Layout>
+          </ThemeProvider>
         </ApolloClientProvider>
       </body>
     </html>
