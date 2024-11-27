@@ -1,3 +1,6 @@
+"use client";
+
+import { getFullDate, TDate } from "@/utils/helpers";
 import { Badge } from "./badge";
 
 const StatusColors = {
@@ -10,6 +13,31 @@ const StatusColors = {
 
 type StatusType = keyof typeof StatusColors;
 
-export const Status = ({ status }: { status: StatusType }) => {
-  return <Badge bgColor={StatusColors[status]}>{status}</Badge>;
+interface StatusProps {
+  status: StatusType;
+  date?: {
+    startDate: TDate;
+    endDate: TDate;
+  };
+}
+
+export const Status = ({ status, date }: StatusProps) => {
+  if (date) {
+    return (
+      <div>
+        <Badge variant="outline" bgColor={StatusColors[status]}>
+          {status}
+        </Badge>
+        <span>
+          from {getFullDate(date?.startDate)}{" "}
+          {date?.endDate && `to ${getFullDate(date?.endDate)}`}
+        </span>
+      </div>
+    );
+  }
+  return (
+    <Badge variant="outline" bgColor={StatusColors[status]}>
+      {status}
+    </Badge>
+  );
 };

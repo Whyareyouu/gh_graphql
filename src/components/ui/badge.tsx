@@ -33,8 +33,8 @@ function Badge({ className, variant, bgColor, ...props }: BadgeProps) {
   return (
     <div
       className={cn(
-        badgeVariants({ variant }),
         bgColor && `bg-[${bgColor}]`,
+        badgeVariants({ variant }),
         className,
       )}
       {...props}
