@@ -1,9 +1,9 @@
 import { z } from "zod";
 
 const dateSchema = z.object({
-  year: z.number(),
-  month: z.number(),
-  day: z.number(),
+  year: z.number().gte(1963).lte(new Date().getFullYear()),
+  month: z.number().gte(1).lte(12),
+  day: z.number().gte(1).lte(31),
 });
 
 export type TDate = z.infer<typeof dateSchema>;
