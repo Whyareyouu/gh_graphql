@@ -1,8 +1,14 @@
 import { ThemeSwitcher } from "./themeSwitcher";
 
-export const Footer = () => {
+export interface FooterProps
+  extends React.DetailedHTMLProps<
+    React.HTMLAttributes<HTMLDivElement>,
+    HTMLDivElement
+  > {}
+
+export const Footer = ({ className }: FooterProps) => {
   return (
-    <footer>
+    <footer className={className}>
       <div>
         Site theme
         <ThemeSwitcher />
