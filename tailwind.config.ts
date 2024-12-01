@@ -44,6 +44,13 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        status: {
+          finished: "hsl(var(--status-finished))",
+          releasing: "hsl(var(--status-releasing))",
+          notYetReleased: "hsl(var(--status-not-yet-released))",
+          cancelled: "hsl(var(--status-cancelled))",
+          hiatus: "hsl(var(--status-hiatus))",
+        },
       },
       borderRadius: {
         lg: `var(--radius)`,
