@@ -15,6 +15,14 @@ const badgeVariants = cva(
         destructive:
           "border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80",
         outline: "text-foreground",
+        classic: "text-white",
+      },
+      status: {
+        FINISHED: "bg-status-finished",
+        RELEASING: "bg-status-releasing",
+        NOT_YET_RELEASED: "bg-status-notYetReleased",
+        CANCELLED: "bg-status-cancelled",
+        HIATUS: "bg-status-hiatus",
       },
     },
     defaultVariants: {
@@ -25,18 +33,12 @@ const badgeVariants = cva(
 
 export interface BadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof badgeVariants> {
-  bgColor?: string;
-}
+    VariantProps<typeof badgeVariants> {}
 
-function Badge({ className, variant, bgColor, ...props }: BadgeProps) {
+function Badge({ className, variant, status, ...props }: BadgeProps) {
   return (
     <div
-      className={cn(
-        bgColor && `bg-[${bgColor}]`,
-        badgeVariants({ variant }),
-        className,
-      )}
+      className={cn(badgeVariants({ variant, status }), className)}
       {...props}
     />
   );

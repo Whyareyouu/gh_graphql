@@ -3,18 +3,15 @@
 import { getFullDate, TDate } from "@/utils/helpers";
 import { Badge } from "./badge";
 
-const StatusColors = {
-  FINISHED: "#4CAF50",
-  RELEASING: "#2196F3",
-  NOT_YET_RELEASED: "#FFC107",
-  CANCELLED: "#F44336",
-  HIATUS: "#9C27B0",
-} as const;
-
-type StatusType = keyof typeof StatusColors;
+export type Statuses =
+  | "FINISHED"
+  | "RELEASING"
+  | "NOT_YET_RELEASED"
+  | "CANCELLED"
+  | "HIATUS";
 
 interface StatusProps {
-  status: StatusType;
+  status: Statuses;
   date?: {
     startDate: TDate;
     endDate: TDate;
@@ -25,7 +22,7 @@ export const Status = ({ status, date }: StatusProps) => {
   if (date) {
     return (
       <div>
-        <Badge variant="outline" bgColor={StatusColors[status]}>
+        <Badge variant="classic" status={status}>
           {status}
         </Badge>
         <span>
@@ -36,7 +33,7 @@ export const Status = ({ status, date }: StatusProps) => {
     );
   }
   return (
-    <Badge variant="outline" bgColor={StatusColors[status]}>
+    <Badge variant="classic" status={status}>
       {status}
     </Badge>
   );
