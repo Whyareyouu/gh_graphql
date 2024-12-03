@@ -1,1 +1,4 @@
-export { useGetAnimeListQuery } from "./hooks/__generated__";
+export {
+  useGetAnimeListQuery,
+  useGetAnimeByIdQuery,
+} from "./hooks/__generated__";

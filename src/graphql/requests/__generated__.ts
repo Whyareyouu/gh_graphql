@@ -4673,24 +4673,83 @@ export type YearStats = {
   year?: Maybe<Scalars['Int']['output']>;
 };
 
-export type GetAnimeListQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetAnimeByIdQueryVariables = Exact<{
+  mediaId?: InputMaybe<Scalars['Int']['input']>;
+}>;
 
 
-export type GetAnimeListQuery = { __typename?: 'Query', Page?: { __typename?: 'Page', media?: Array<{ __typename?: 'Media', seasonYear?: number | null, format?: MediaFormat | null, coverImage?: { __typename?: 'MediaCoverImage', large?: string | null } | null, title?: { __typename?: 'MediaTitle', english?: string | null } | null } | null> | null } | null };
+export type GetAnimeByIdQuery = { __typename?: 'Query', Page?: { __typename?: 'Page', media?: Array<{ __typename?: 'Media', seasonYear?: number | null, format?: MediaFormat | null, id: number, status?: MediaStatus | null, duration?: number | null, description?: string | null, episodes?: number | null, genres?: Array<string | null> | null, season?: MediaSeason | null, coverImage?: { __typename?: 'MediaCoverImage', large?: string | null } | null, title?: { __typename?: 'MediaTitle', english?: string | null, romaji?: string | null, native?: string | null } | null, endDate?: { __typename?: 'FuzzyDate', day?: number | null, month?: number | null, year?: number | null } | null, startDate?: { __typename?: 'FuzzyDate', day?: number | null, month?: number | null, year?: number | null } | null, studios?: { __typename?: 'StudioConnection', edges?: Array<{ __typename?: 'StudioEdge', isMain: boolean, node?: { __typename?: 'Studio', name: string } | null } | null> | null } | null } | null> | null } | null };
+
+export type GetAnimeListQueryVariables = Exact<{
+  page?: InputMaybe<Scalars['Int']['input']>;
+  perPage?: InputMaybe<Scalars['Int']['input']>;
+}>;
 
 
-export const GetAnimeListDocument = gql`
-    query GetAnimeList {
+export type GetAnimeListQuery = { __typename?: 'Query', Page?: { __typename?: 'Page', media?: Array<{ __typename?: 'Media', seasonYear?: number | null, format?: MediaFormat | null, id: number, coverImage?: { __typename?: 'MediaCoverImage', large?: string | null } | null, title?: { __typename?: 'MediaTitle', english?: string | null, romaji?: string | null } | null } | null> | null, pageInfo?: { __typename?: 'PageInfo', hasNextPage?: boolean | null, total?: number | null } | null } | null };
+
+
+export const GetAnimeByIdDocument = gql`
+    query GetAnimeById($mediaId: Int) {
   Page {
-    media {
+    media(sort: POPULARITY_DESC, type: ANIME, format: TV, id: $mediaId) {
       seasonYear
       format
+      id
       coverImage {
         large
       }
       title {
         english
+        romaji
+        native
       }
+      status
+      endDate {
+        day
+        month
+        year
+      }
+      startDate {
+        day
+        month
+        year
+      }
+      duration
+      description
+      episodes
+      genres
+      season
+      studios {
+        edges {
+          isMain
+          node {
+            name
+          }
+        }
+      }
+    }
+  }
+}
+    `;
+export const GetAnimeListDocument = gql`
+    query GetAnimeList($page: Int, $perPage: Int) {
+  Page(perPage: $perPage, page: $page) {
+    media(sort: POPULARITY_DESC, type: ANIME, format: TV) {
+      seasonYear
+      format
+      id
+      coverImage {
+        large
+      }
+      title {
+        english
+        romaji
+      }
+    }
+    pageInfo {
+      hasNextPage
+      total
     }
   }
 }
@@ -4703,6 +4762,9 @@ const defaultWrapper: SdkFunctionWrapper = (action, _operationName, _operationTy
 
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
+    GetAnimeById(variables?: GetAnimeByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetAnimeByIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetAnimeByIdQuery>(GetAnimeByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAnimeById', 'query', variables);
+    },
     GetAnimeList(variables?: GetAnimeListQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetAnimeListQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetAnimeListQuery>(GetAnimeListDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAnimeList', 'query', variables);
     }
