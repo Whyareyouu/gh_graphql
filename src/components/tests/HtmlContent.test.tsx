@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
-import { HtmlContent } from "../ui/HtmlContent";
+import { HtmlContent } from "../ui/htmlContent";
 
 describe("HtmlContent", () => {
   it("renders HTML content passed as a prop", () => {

@@ -10,9 +10,7 @@ export type TDate = z.infer<typeof dateSchema>;
 
 export const getMonthNameByNumber = (month: TDate["month"]): string => {
   if (!month || month > 12 || month < 1) return "";
-  return Intl.DateTimeFormat("en", { month: "short" }).format(
-    new Date(month.toString()),
-  );
+  return Intl.DateTimeFormat("en", { month: "short" }).format(new Date(month.toString()));
 };
 
 export const getFullDate = (date: TDate): string => {

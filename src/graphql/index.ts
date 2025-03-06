@@ -1,4 +1,3 @@
-export {
-  useGetAnimeListQuery,
-  useGetAnimeByIdQuery,
-} from "./hooks/__generated__";
+export { useGetAnimeListQuery, useGetAnimeByIdQuery, MediaListStatus } from "./hooks/__generated__";
+
+export type { StatusDistribution } from "./hooks/__generated__";

@@ -29,10 +29,10 @@ describe("Test function getFullDate", () => {
     expect(getFullDate({ day: 12, year: 2023 })).toBe("");
   });
 
-  it("More then max or less then min valoues", () => {
+  it("More then max or less then min values", () => {
     expect(getFullDate({ day: 32, month: 12, year: 2023 })).toBe("");
     expect(getFullDate({ day: 12, month: 13, year: 2013 })).toBe("");
-    expect(getFullDate({ day: 12, month: 12, year: 2025 })).toBe("");
+    expect(getFullDate({ day: 12, month: 12, year: 2125 })).toBe("");
     expect(getFullDate({ day: 12, month: 12, year: 1962 })).toBe("");
   });
 });
