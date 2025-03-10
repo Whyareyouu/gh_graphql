@@ -8,21 +8,24 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
-        default:
-          "border-transparent bg-primary text-primary-foreground shadow hover:bg-primary/80",
-        secondary:
-          "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        destructive:
-          "border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80",
+        default: "border-transparent bg-primary text-primary-foreground shadow hover:bg-primary/80",
+        secondary: "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        destructive: "border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80",
         outline: "text-foreground",
         classic: "text-white",
       },
-      status: {
-        FINISHED: "bg-status-finished",
-        RELEASING: "bg-status-releasing",
-        NOT_YET_RELEASED: "bg-status-notYetReleased",
-        CANCELLED: "bg-status-cancelled",
-        HIATUS: "bg-status-hiatus",
+      badge: {
+        greenAccent: "bg-badge-green-accent",
+        lightGreenAccent: "bg-badge-light-green-accent",
+        blueAccent: "bg-badge-blue-accent",
+        yellowAccent: "bg-badge-yellow-accent",
+        redAccent: "bg-badge-red-accent",
+        purpleAccent: "bg-badge-purple-accent",
+        pinkAccent: "bg-badge-pink-accent",
+        violetAccent: "bg-badge-violet-accent",
+        cyanAccent: "bg-badge-cyan-accent",
+        salmonAccent: "bg-badge-salmon-accent",
+        magentaAccent: "bg-badge-magenta-accent",
       },
     },
     defaultVariants: {
@@ -31,17 +34,10 @@ const badgeVariants = cva(
   },
 );
 
-export interface BadgeProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof badgeVariants> {}
+export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof badgeVariants> {}
 
-function Badge({ className, variant, status, ...props }: BadgeProps) {
-  return (
-    <div
-      className={cn(badgeVariants({ variant, status }), className)}
-      {...props}
-    />
-  );
+function Badge({ className, variant, badge, ...props }: BadgeProps) {
+  return <div className={cn(badgeVariants({ variant, badge }), className)} {...props} />;
 }
 
 export { Badge, badgeVariants };

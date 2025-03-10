@@ -2,15 +2,17 @@ import * as React from "react";
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/utils/helpers/shadcnui";
+import { MediaListStatus } from "@/graphql";
 
 const lineVariants = cva("h-3 w-full max-w-max", {
   variants: {
     status: {
-      CURRENT: "bg-[#68D639]",
-      PLANNING: "bg-[#02A9FF]",
-      COMPLETED: "bg-[#9256F3]",
-      DROPPED: "bg-[#F779A4]",
-      PAUSED: "bg-[#E85D75]",
+      [MediaListStatus.Current]: "bg-[#9256F3]",
+      [MediaListStatus.Planning]: "bg-[#02A9FF]",
+      [MediaListStatus.Completed]: "bg-[#68D639]",
+      [MediaListStatus.Dropped]: "bg-[#F779A4]",
+      [MediaListStatus.Paused]: "bg-[#E85D75]",
+      [MediaListStatus.Repeating]: "#dd13c2",
     },
   },
 });

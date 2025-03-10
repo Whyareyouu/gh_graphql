@@ -39,6 +39,12 @@ export const GET_ANIME_BY_ID = gql`
             }
           }
         }
+        stats {
+          statusDistribution {
+            status
+            amount
+          }
+        }
       }
     }
   }

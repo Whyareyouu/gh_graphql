@@ -1,10 +1,5 @@
 "use client";
-import {
-  ApolloClient,
-  ApolloProvider,
-  createHttpLink,
-  InMemoryCache,
-} from "@apollo/client";
+import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from "@apollo/client";
 
 const httpLink = createHttpLink({
   uri: "https://graphql.anilist.co",
@@ -19,8 +14,6 @@ interface ApolloClientProviderProps {
   children: React.ReactNode;
 }
 
-export const ApolloClientProvider = ({
-  children,
-}: ApolloClientProviderProps) => {
+export const ApolloClientProvider = ({ children }: ApolloClientProviderProps) => {
   return <ApolloProvider client={client}>{children}</ApolloProvider>;
 };

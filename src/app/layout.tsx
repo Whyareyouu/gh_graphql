@@ -17,12 +17,7 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className="h-full">
       <body className="h-full">
         <ApolloClientProvider>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="dark"
-            enableSystem
-            disableTransitionOnChange
-          >
+          <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
             <Layout>{children}</Layout>
           </ThemeProvider>
         </ApolloClientProvider>

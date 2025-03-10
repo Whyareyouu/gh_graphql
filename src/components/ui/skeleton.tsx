@@ -13,14 +13,10 @@ const skeletonVariants = cva("animate-pulse rounded-md bg-primary/10", {
   },
 });
 
-export interface SkeletonProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof skeletonVariants> {}
+export interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof skeletonVariants> {}
 
 function Skeleton({ className, variant, ...props }: SkeletonProps) {
-  return (
-    <div className={cn(skeletonVariants({ variant }), className)} {...props} />
-  );
+  return <div className={cn(skeletonVariants({ variant }), className)} {...props} />;
 }
 
 export { Skeleton, skeletonVariants };
