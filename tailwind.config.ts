@@ -2,12 +2,7 @@ import type { Config } from "tailwindcss";
 
 export default {
   darkMode: ["class"],
-  content: [
-    "./pages/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
-    "./app/**/*.{ts,tsx}",
-    "./src/**/*.{ts,tsx}",
-  ],
+  content: ["./pages/**/*.{ts,tsx}", "./components/**/*.{ts,tsx}", "./app/**/*.{ts,tsx}", "./src/**/*.{ts,tsx}"],
   theme: {
     extend: {
       colors: {
@@ -44,12 +39,38 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        status: {
-          finished: "hsl(var(--status-finished))",
-          releasing: "hsl(var(--status-releasing))",
-          notYetReleased: "hsl(var(--status-not-yet-released))",
-          cancelled: "hsl(var(--status-cancelled))",
-          hiatus: "hsl(var(--status-hiatus))",
+        "green-accent": {
+          DEFAULT: "hsl(var(--green-accent))", // finished
+        },
+        "blue-accent": {
+          DEFAULT: "hsl(var(--blue-accent))", // releasing
+        },
+        "yellow-accent": {
+          DEFAULT: "hsl(var(--yellow-accent))", // not yet released
+        },
+        "red-accent": {
+          DEFAULT: "hsl(var(--red-accent))", // cancelled
+        },
+        "purple-accent": {
+          DEFAULT: "hsl(var(--purple-accent))", // hiatus
+        },
+        "violet-accent": {
+          DEFAULT: "hsl(var(--violet-accent))", // current
+        },
+        "cyan-accent": {
+          DEFAULT: "hsl(var(--cyan-accent))", // planning
+        },
+        "light-green-accent": {
+          DEFAULT: "hsl(var(--light-green-accent))", // completed
+        },
+        "pink-accent": {
+          DEFAULT: "hsl(var(--pink-accent))", // dropped
+        },
+        "salmon-accent": {
+          DEFAULT: "hsl(var(--salmon-accent))", // paused
+        },
+        "magenta-accent": {
+          DEFAULT: "hsl(var(--magenta-accent))", // repeating
         },
       },
       borderRadius: {

@@ -30,11 +30,18 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
 
-    --status-finished: 120 39% 53%;
-    --status-releasing: 207 90% 54%;
-    --status-not-yet-released: 45 100% 64%;
-    --status-cancelled: 0 69% 54%;
-    --status-hiatus: 292 61% 47%;
+    /* colors */
+    --green-accent: 142, 54%, 49%;
+    --blue-accent: 204, 74%, 58%; 
+    --yellow-accent: 45, 100%, 66%;
+    --red-accent: 0, 59%, 54%;
+    --purple-accent: 276, 47%, 47%;
+    --violet-accent: 258, 85%, 65%;
+    --cyan-accent: 198, 98%, 50%;
+    --light-green-accent: 105, 68%, 53%;
+    --pink-accent: 343, 84%, 72%;
+    --salmon-accent: 352, 77%, 64%;
+    --magenta-accent: 312, 85%, 47%;
   }
 
   .dark {
