@@ -2,16 +2,11 @@
 
 import { getFullDate, TDate } from "@/utils/helpers";
 import { Badge } from "./badge";
-
-export type Statuses =
-  | "FINISHED"
-  | "RELEASING"
-  | "NOT_YET_RELEASED"
-  | "CANCELLED"
-  | "HIATUS";
+import { MediaStatus } from "@/graphql";
+import { statusColors } from "@/utils/helpers";
 
 interface StatusProps {
-  status: Statuses;
+  status: MediaStatus;
   date?: {
     startDate: TDate;
     endDate: TDate;
@@ -22,19 +17,12 @@ export const Status = ({ status, date }: StatusProps) => {
   if (date) {
     return (
       <div>
-        <Badge variant="classic" status={status}>
-          {status}
-        </Badge>
+        <Badge colors={statusColors[status]}>{status}</Badge>
         <span>
-          from {getFullDate(date?.startDate)}{" "}
-          {date?.endDate && `to ${getFullDate(date?.endDate)}`}
+          from {getFullDate(date?.startDate)} {date?.endDate && `to ${getFullDate(date?.endDate)}`}
         </span>
       </div>
     );
   }
-  return (
-    <Badge variant="classic" status={status}>
-      {status}
-    </Badge>
-  );
+  return <Badge colors={statusColors[status]}>{status}</Badge>;
 };

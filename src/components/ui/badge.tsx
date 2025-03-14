@@ -12,32 +12,32 @@ const badgeVariants = cva(
         secondary: "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
         destructive: "border-transparent bg-destructive text-destructive-foreground shadow hover:bg-destructive/80",
         outline: "text-foreground",
-        classic: "text-white",
+        classic: "text-white text-sm",
       },
-      badge: {
-        greenAccent: "bg-badge-green-accent",
-        lightGreenAccent: "bg-badge-light-green-accent",
-        blueAccent: "bg-badge-blue-accent",
-        yellowAccent: "bg-badge-yellow-accent",
-        redAccent: "bg-badge-red-accent",
-        purpleAccent: "bg-badge-purple-accent",
-        pinkAccent: "bg-badge-pink-accent",
-        violetAccent: "bg-badge-violet-accent",
-        cyanAccent: "bg-badge-cyan-accent",
-        salmonAccent: "bg-badge-salmon-accent",
-        magentaAccent: "bg-badge-magenta-accent",
+      colors: {
+        greenAccent: "bg-green-accent",
+        lightGreenAccent: "bg-light-green-accent",
+        blueAccent: "bg-blue-accent",
+        yellowAccent: "bg-yellow-accent",
+        redAccent: "bg-red-accent",
+        purpleAccent: "bg-purple-accent",
+        pinkAccent: "bg-pink-accent",
+        violetAccent: "bg-violet-accent",
+        cyanAccent: "bg-cyan-accent",
+        salmonAccent: "bg-salmon-accent",
+        magentaAccent: "bg-magenta-accent",
       },
     },
     defaultVariants: {
-      variant: "default",
+      variant: "classic",
     },
   },
 );
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement>, VariantProps<typeof badgeVariants> {}
 
-function Badge({ className, variant, badge, ...props }: BadgeProps) {
-  return <div className={cn(badgeVariants({ variant, badge }), className)} {...props} />;
+function Badge({ className, variant, colors, ...props }: BadgeProps) {
+  return <div className={cn(badgeVariants({ variant, colors }), className)} {...props} />;
 }
 
 export { Badge, badgeVariants };
