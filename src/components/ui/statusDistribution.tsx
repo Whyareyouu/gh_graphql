@@ -60,7 +60,7 @@ export const StatusDistribution = ({ statusDistribution = [] }: { statusDistribu
   );
 
   return (
-    <Card className="max-w-xl">
+    <Card className="max-w-xl w-full">
       <CardContent className="flex flex-col gap-2 p-4">
         <div className="flex justify-around">{renderContent.stats}</div>
         <div className="flex">{renderContent.progress}</div>

@@ -44,6 +44,10 @@ export const GET_ANIME_BY_ID = gql`
             status
             amount
           }
+          scoreDistribution {
+            amount
+            score
+          }
         }
       }
     }
