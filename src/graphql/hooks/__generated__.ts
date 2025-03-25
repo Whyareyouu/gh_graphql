@@ -4683,10 +4683,19 @@ export type GetAnimeByIdQuery = { __typename?: 'Query', Page?: { __typename?: 'P
 export type GetAnimeListQueryVariables = Exact<{
   page?: InputMaybe<Scalars['Int']['input']>;
   perPage?: InputMaybe<Scalars['Int']['input']>;
+  studiosIsMain2?: InputMaybe<Scalars['Boolean']['input']>;
 }>;
 
 
-export type GetAnimeListQuery = { __typename?: 'Query', Page?: { __typename?: 'Page', media?: Array<{ __typename?: 'Media', seasonYear?: number | null, format?: MediaFormat | null, id: number, coverImage?: { __typename?: 'MediaCoverImage', large?: string | null } | null, title?: { __typename?: 'MediaTitle', english?: string | null, romaji?: string | null } | null } | null> | null, pageInfo?: { __typename?: 'PageInfo', hasNextPage?: boolean | null, total?: number | null } | null } | null };
+export type GetAnimeListQuery = { __typename?: 'Query', Page?: { __typename?: 'Page', media?: Array<{ __typename?: 'Media', seasonYear?: number | null, format?: MediaFormat | null, id: number, averageScore?: number | null, genres?: Array<string | null> | null, season?: MediaSeason | null, episodes?: number | null, type?: MediaType | null, coverImage?: { __typename?: 'MediaCoverImage', large?: string | null } | null, title?: { __typename?: 'MediaTitle', english?: string | null, romaji?: string | null } | null, studios?: { __typename?: 'StudioConnection', nodes?: Array<{ __typename?: 'Studio', name: string } | null> | null } | null } | null> | null, pageInfo?: { __typename?: 'PageInfo', hasNextPage?: boolean | null, total?: number | null } | null } | null };
+
+export type GetRelationsByIdQueryVariables = Exact<{
+  mediaId?: InputMaybe<Scalars['Int']['input']>;
+  isMain?: InputMaybe<Scalars['Boolean']['input']>;
+}>;
+
+
+export type GetRelationsByIdQuery = { __typename?: 'Query', Page?: { __typename?: 'Page', media?: Array<{ __typename?: 'Media', relations?: { __typename?: 'MediaConnection', nodes?: Array<{ __typename?: 'Media', type?: MediaType | null, seasonYear?: number | null, season?: MediaSeason | null, episodes?: number | null, averageScore?: number | null, format?: MediaFormat | null, id: number, genres?: Array<string | null> | null, coverImage?: { __typename?: 'MediaCoverImage', large?: string | null } | null, title?: { __typename?: 'MediaTitle', english?: string | null, romaji?: string | null } | null, studios?: { __typename?: 'StudioConnection', nodes?: Array<{ __typename?: 'Studio', name: string } | null> | null } | null, startDate?: { __typename?: 'FuzzyDate', year?: number | null } | null } | null> | null } | null } | null> | null } | null };
 
 
 export const GetAnimeByIdDocument = gql`
@@ -4776,7 +4785,7 @@ export type GetAnimeByIdLazyQueryHookResult = ReturnType<typeof useGetAnimeByIdL
 export type GetAnimeByIdSuspenseQueryHookResult = ReturnType<typeof useGetAnimeByIdSuspenseQuery>;
 export type GetAnimeByIdQueryResult = Apollo.QueryResult<GetAnimeByIdQuery, GetAnimeByIdQueryVariables>;
 export const GetAnimeListDocument = gql`
-    query GetAnimeList($page: Int, $perPage: Int) {
+    query GetAnimeList($page: Int, $perPage: Int, $studiosIsMain2: Boolean) {
   Page(perPage: $perPage, page: $page) {
     media(sort: POPULARITY_DESC, type: ANIME, format: TV) {
       seasonYear
@@ -4789,6 +4798,16 @@ export const GetAnimeListDocument = gql`
         english
         romaji
       }
+      averageScore
+      genres
+      season
+      episodes
+      studios(isMain: $studiosIsMain2) {
+        nodes {
+          name
+        }
+      }
+      type
     }
     pageInfo {
       hasNextPage
@@ -4812,6 +4831,7 @@ export const GetAnimeListDocument = gql`
  *   variables: {
  *      page: // value for 'page'
  *      perPage: // value for 'perPage'
+ *      studiosIsMain2: // value for 'studiosIsMain2'
  *   },
  * });
  */
@@ -4831,3 +4851,72 @@ export type GetAnimeListQueryHookResult = ReturnType<typeof useGetAnimeListQuery
 export type GetAnimeListLazyQueryHookResult = ReturnType<typeof useGetAnimeListLazyQuery>;
 export type GetAnimeListSuspenseQueryHookResult = ReturnType<typeof useGetAnimeListSuspenseQuery>;
 export type GetAnimeListQueryResult = Apollo.QueryResult<GetAnimeListQuery, GetAnimeListQueryVariables>;
+export const GetRelationsByIdDocument = gql`
+    query GetRelationsById($mediaId: Int, $isMain: Boolean) {
+  Page {
+    media(id: $mediaId) {
+      relations {
+        nodes {
+          coverImage {
+            large
+          }
+          title {
+            english
+            romaji
+          }
+          type
+          seasonYear
+          season
+          episodes
+          averageScore
+          format
+          studios(isMain: $isMain) {
+            nodes {
+              name
+            }
+          }
+          startDate {
+            year
+          }
+          id
+          genres
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetRelationsByIdQuery__
+ *
+ * To run a query within a React component, call `useGetRelationsByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetRelationsByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetRelationsByIdQuery({
+ *   variables: {
+ *      mediaId: // value for 'mediaId'
+ *      isMain: // value for 'isMain'
+ *   },
+ * });
+ */
+export function useGetRelationsByIdQuery(baseOptions?: Apollo.QueryHookOptions<GetRelationsByIdQuery, GetRelationsByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetRelationsByIdQuery, GetRelationsByIdQueryVariables>(GetRelationsByIdDocument, options);
+      }
+export function useGetRelationsByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetRelationsByIdQuery, GetRelationsByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetRelationsByIdQuery, GetRelationsByIdQueryVariables>(GetRelationsByIdDocument, options);
+        }
+export function useGetRelationsByIdSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetRelationsByIdQuery, GetRelationsByIdQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetRelationsByIdQuery, GetRelationsByIdQueryVariables>(GetRelationsByIdDocument, options);
+        }
+export type GetRelationsByIdQueryHookResult = ReturnType<typeof useGetRelationsByIdQuery>;
+export type GetRelationsByIdLazyQueryHookResult = ReturnType<typeof useGetRelationsByIdLazyQuery>;
+export type GetRelationsByIdSuspenseQueryHookResult = ReturnType<typeof useGetRelationsByIdSuspenseQuery>;
+export type GetRelationsByIdQueryResult = Apollo.QueryResult<GetRelationsByIdQuery, GetRelationsByIdQueryVariables>;
