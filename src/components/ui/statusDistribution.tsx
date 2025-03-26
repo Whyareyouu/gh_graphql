@@ -24,7 +24,7 @@ type AccType = {
 };
 
 export const StatusDistribution = ({ statusDistribution = [] }: { statusDistribution: Status[] }) => {
-  const totalAmount = statusDistribution.reduce((acc, status) => acc + (status?.amount ?? 0), 0);
+  const totalAmount = statusDistribution?.reduce((acc, status) => acc + (status?.amount ?? 0), 0);
 
   if (!totalAmount) return;
 

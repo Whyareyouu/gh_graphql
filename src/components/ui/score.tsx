@@ -9,7 +9,7 @@ import { TooltipWrapper } from "./tooltip";
 import { ScoreDistribution } from "@/graphql";
 
 export const Score = ({ scoreDistribution }: { scoreDistribution: ScoreDistribution[] }) => {
-  const totalAmount = scoreDistribution.reduce((sum, { amount }) => sum + (amount ?? 0), 0);
+  const totalAmount = scoreDistribution?.reduce((sum, { amount }) => sum + (amount ?? 0), 0);
 
   if (!totalAmount) return;
 
