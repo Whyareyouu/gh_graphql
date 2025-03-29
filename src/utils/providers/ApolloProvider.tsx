@@ -1,19 +1,55 @@
 "use client";
-import { ApolloClient, ApolloProvider, createHttpLink, InMemoryCache } from "@apollo/client";
 
-const httpLink = createHttpLink({
-  uri: "https://graphql.anilist.co",
-});
+import { ApolloLink, HttpLink } from "@apollo/client";
+import {
+  ApolloClient,
+  ApolloNextAppProvider,
+  InMemoryCache,
+  SSRMultipartLink,
+} from "@apollo/experimental-nextjs-app-support";
+import { setVerbosity } from "ts-invariant";
+setVerbosity("debug");
+function makeClient() {
+  const httpLink = new HttpLink({
+    uri: "https://graphql.anilist.co",
+    fetchOptions: { cache: "no-store" },
+  });
 
-const client = new ApolloClient({
-  link: httpLink,
-  cache: new InMemoryCache(),
-});
-
-interface ApolloClientProviderProps {
-  children: React.ReactNode;
+  return new ApolloClient({
+    cache: new InMemoryCache(),
+    link:
+      typeof window === "undefined"
+        ? ApolloLink.from([
+            new SSRMultipartLink({
+              stripDefer: true,
+            }),
+            httpLink,
+          ])
+        : httpLink,
+  });
 }
 
-export const ApolloClientProvider = ({ children }: ApolloClientProviderProps) => {
-  return <ApolloProvider client={client}>{children}</ApolloProvider>;
-};
+// function makeClient() {
+//   const httpLink = new HttpLink({
+//     // this needs to be an absolute url, as relative urls cannot be used in SSR
+//     uri: "https://graphql.anilist.co",
+//     // you can disable result caching here if you want to
+//     // (this does not work if you are rendering your page with `export const dynamic = "force-static"`)
+//     fetchOptions: { cache: "no-store" },
+//     // you can override the default `fetchOptions` on a per query basis
+//     // via the `context` property on the options passed as a second argument
+//     // to an Apollo Client data fetching hook, e.g.:
+//     // const { data } = useSuspenseQuery(MY_QUERY, { context: { fetchOptions: { cache: "force-cache" }}});
+//   });
+
+//   // use the `ApolloClient` from "@apollo/experimental-nextjs-app-support"
+//   return new ApolloClient({
+//     // use the `InMemoryCache` from "@apollo/experimental-nextjs-app-support"
+//     cache: new InMemoryCache(),
+//     link: httpLink,
+//   });
+// }
+
+export function ApolloClientProvider({ children }: React.PropsWithChildren) {
+  return <ApolloNextAppProvider makeClient={makeClient}>{children}</ApolloNextAppProvider>;
+}

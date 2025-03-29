@@ -7,3 +7,4 @@ export {
 
 export type { StatusDistribution, ScoreDistribution, GetAnimeListQuery } from "./hooks/__generated__";
 export { MediaStatus } from "./hooks/__generated__";
+export * from "./documents/";
