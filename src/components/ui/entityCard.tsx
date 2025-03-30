@@ -51,13 +51,13 @@ export const EntityCard = (props: AnimeCardProps) => {
   );
 
   return (
-    <div className="max-w-48">
+    <div className="max-w-48 w-full">
       <HoverCardWrapper content={hoverCardContent} side="right" sideOffset={10}>
         <Link
           href={`/${type.toLowerCase()}/${id}/${title.toLowerCase().replaceAll(" ", "-")}`}
-          className="flex flex-col gap-2"
+          className="flex flex-col gap-2 justify-between"
         >
-          <Image src={coverImage} alt={title} width={186} height={265} />
+          <Image src={coverImage} alt={title} width={186} height={265} className="w-[186px] h-[265px]" />
           <h2>{title}</h2>
         </Link>
       </HoverCardWrapper>

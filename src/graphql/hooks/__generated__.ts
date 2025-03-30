@@ -4678,7 +4678,7 @@ export type GetAnimeByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetAnimeByIdQuery = { __typename?: 'Query', Page?: { __typename?: 'Page', media?: Array<{ __typename?: 'Media', seasonYear?: number | null, format?: MediaFormat | null, id: number, status?: MediaStatus | null, duration?: number | null, description?: string | null, episodes?: number | null, genres?: Array<string | null> | null, season?: MediaSeason | null, coverImage?: { __typename?: 'MediaCoverImage', large?: string | null } | null, title?: { __typename?: 'MediaTitle', english?: string | null, romaji?: string | null, native?: string | null } | null, endDate?: { __typename?: 'FuzzyDate', day?: number | null, month?: number | null, year?: number | null } | null, startDate?: { __typename?: 'FuzzyDate', day?: number | null, month?: number | null, year?: number | null } | null, studios?: { __typename?: 'StudioConnection', edges?: Array<{ __typename?: 'StudioEdge', isMain: boolean, node?: { __typename?: 'Studio', name: string } | null } | null> | null } | null, stats?: { __typename?: 'MediaStats', statusDistribution?: Array<{ __typename?: 'StatusDistribution', status?: MediaListStatus | null, amount?: number | null } | null> | null, scoreDistribution?: Array<{ __typename?: 'ScoreDistribution', amount?: number | null, score?: number | null } | null> | null } | null } | null> | null } | null };
+export type GetAnimeByIdQuery = { __typename?: 'Query', Media?: { __typename?: 'Media', seasonYear?: number | null, format?: MediaFormat | null, id: number, status?: MediaStatus | null, duration?: number | null, description?: string | null, episodes?: number | null, genres?: Array<string | null> | null, season?: MediaSeason | null, coverImage?: { __typename?: 'MediaCoverImage', large?: string | null } | null, title?: { __typename?: 'MediaTitle', english?: string | null, romaji?: string | null, native?: string | null } | null, endDate?: { __typename?: 'FuzzyDate', day?: number | null, month?: number | null, year?: number | null } | null, startDate?: { __typename?: 'FuzzyDate', day?: number | null, month?: number | null, year?: number | null } | null, studios?: { __typename?: 'StudioConnection', edges?: Array<{ __typename?: 'StudioEdge', isMain: boolean, node?: { __typename?: 'Studio', name: string } | null } | null> | null } | null } | null };
 
 export type GetAnimeListQueryVariables = Exact<{
   page?: InputMaybe<Scalars['Int']['input']>;
@@ -4695,56 +4695,58 @@ export type GetRelationsByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetRelationsByIdQuery = { __typename?: 'Query', Page?: { __typename?: 'Page', media?: Array<{ __typename?: 'Media', relations?: { __typename?: 'MediaConnection', nodes?: Array<{ __typename?: 'Media', type?: MediaType | null, seasonYear?: number | null, season?: MediaSeason | null, episodes?: number | null, averageScore?: number | null, format?: MediaFormat | null, id: number, genres?: Array<string | null> | null, coverImage?: { __typename?: 'MediaCoverImage', large?: string | null } | null, title?: { __typename?: 'MediaTitle', english?: string | null, romaji?: string | null } | null, studios?: { __typename?: 'StudioConnection', nodes?: Array<{ __typename?: 'Studio', name: string } | null> | null } | null, startDate?: { __typename?: 'FuzzyDate', year?: number | null } | null } | null> | null } | null } | null> | null } | null };
+export type GetRelationsByIdQuery = { __typename?: 'Query', Media?: { __typename?: 'Media', relations?: { __typename?: 'MediaConnection', nodes?: Array<{ __typename?: 'Media', type?: MediaType | null, seasonYear?: number | null, season?: MediaSeason | null, episodes?: number | null, averageScore?: number | null, format?: MediaFormat | null, id: number, genres?: Array<string | null> | null, coverImage?: { __typename?: 'MediaCoverImage', large?: string | null } | null, title?: { __typename?: 'MediaTitle', english?: string | null, romaji?: string | null } | null, studios?: { __typename?: 'StudioConnection', nodes?: Array<{ __typename?: 'Studio', name: string } | null> | null } | null, startDate?: { __typename?: 'FuzzyDate', year?: number | null } | null } | null> | null } | null } | null };
+
+export type GetScoreDistributionByIdQueryVariables = Exact<{
+  mediaId?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type GetScoreDistributionByIdQuery = { __typename?: 'Query', Media?: { __typename?: 'Media', stats?: { __typename?: 'MediaStats', scoreDistribution?: Array<{ __typename?: 'ScoreDistribution', amount?: number | null, score?: number | null } | null> | null } | null } | null };
+
+export type GetStatusDistributionByIdQueryVariables = Exact<{
+  mediaId?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type GetStatusDistributionByIdQuery = { __typename?: 'Query', Media?: { __typename?: 'Media', stats?: { __typename?: 'MediaStats', statusDistribution?: Array<{ __typename?: 'StatusDistribution', status?: MediaListStatus | null, amount?: number | null } | null> | null } | null } | null };
 
 
 export const GetAnimeByIdDocument = gql`
     query GetAnimeById($mediaId: Int) {
-  Page {
-    media(sort: POPULARITY_DESC, type: ANIME, format: TV, id: $mediaId) {
-      seasonYear
-      format
-      id
-      coverImage {
-        large
-      }
-      title {
-        english
-        romaji
-        native
-      }
-      status
-      endDate {
-        day
-        month
-        year
-      }
-      startDate {
-        day
-        month
-        year
-      }
-      duration
-      description
-      episodes
-      genres
-      season
-      studios {
-        edges {
-          isMain
-          node {
-            name
-          }
-        }
-      }
-      stats {
-        statusDistribution {
-          status
-          amount
-        }
-        scoreDistribution {
-          amount
-          score
+  Media(sort: POPULARITY_DESC, type: ANIME, format: TV, id: $mediaId) {
+    seasonYear
+    format
+    id
+    coverImage {
+      large
+    }
+    title {
+      english
+      romaji
+      native
+    }
+    status
+    endDate {
+      day
+      month
+      year
+    }
+    startDate {
+      day
+      month
+      year
+    }
+    duration
+    description
+    episodes
+    genres
+    season
+    studios {
+      edges {
+        isMain
+        node {
+          name
         }
       }
     }
@@ -4853,34 +4855,32 @@ export type GetAnimeListSuspenseQueryHookResult = ReturnType<typeof useGetAnimeL
 export type GetAnimeListQueryResult = Apollo.QueryResult<GetAnimeListQuery, GetAnimeListQueryVariables>;
 export const GetRelationsByIdDocument = gql`
     query GetRelationsById($mediaId: Int, $isMain: Boolean) {
-  Page {
-    media(id: $mediaId) {
-      relations {
-        nodes {
-          coverImage {
-            large
-          }
-          title {
-            english
-            romaji
-          }
-          type
-          seasonYear
-          season
-          episodes
-          averageScore
-          format
-          studios(isMain: $isMain) {
-            nodes {
-              name
-            }
-          }
-          startDate {
-            year
-          }
-          id
-          genres
+  Media(id: $mediaId) {
+    relations {
+      nodes {
+        coverImage {
+          large
         }
+        title {
+          english
+          romaji
+        }
+        type
+        seasonYear
+        season
+        episodes
+        averageScore
+        format
+        studios(isMain: $isMain) {
+          nodes {
+            name
+          }
+        }
+        startDate {
+          year
+        }
+        id
+        genres
       }
     }
   }
@@ -4920,3 +4920,93 @@ export type GetRelationsByIdQueryHookResult = ReturnType<typeof useGetRelationsB
 export type GetRelationsByIdLazyQueryHookResult = ReturnType<typeof useGetRelationsByIdLazyQuery>;
 export type GetRelationsByIdSuspenseQueryHookResult = ReturnType<typeof useGetRelationsByIdSuspenseQuery>;
 export type GetRelationsByIdQueryResult = Apollo.QueryResult<GetRelationsByIdQuery, GetRelationsByIdQueryVariables>;
+export const GetScoreDistributionByIdDocument = gql`
+    query GetScoreDistributionById($mediaId: Int) {
+  Media(id: $mediaId) {
+    stats {
+      scoreDistribution {
+        amount
+        score
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetScoreDistributionByIdQuery__
+ *
+ * To run a query within a React component, call `useGetScoreDistributionByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetScoreDistributionByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetScoreDistributionByIdQuery({
+ *   variables: {
+ *      mediaId: // value for 'mediaId'
+ *   },
+ * });
+ */
+export function useGetScoreDistributionByIdQuery(baseOptions?: Apollo.QueryHookOptions<GetScoreDistributionByIdQuery, GetScoreDistributionByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetScoreDistributionByIdQuery, GetScoreDistributionByIdQueryVariables>(GetScoreDistributionByIdDocument, options);
+      }
+export function useGetScoreDistributionByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetScoreDistributionByIdQuery, GetScoreDistributionByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetScoreDistributionByIdQuery, GetScoreDistributionByIdQueryVariables>(GetScoreDistributionByIdDocument, options);
+        }
+export function useGetScoreDistributionByIdSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetScoreDistributionByIdQuery, GetScoreDistributionByIdQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetScoreDistributionByIdQuery, GetScoreDistributionByIdQueryVariables>(GetScoreDistributionByIdDocument, options);
+        }
+export type GetScoreDistributionByIdQueryHookResult = ReturnType<typeof useGetScoreDistributionByIdQuery>;
+export type GetScoreDistributionByIdLazyQueryHookResult = ReturnType<typeof useGetScoreDistributionByIdLazyQuery>;
+export type GetScoreDistributionByIdSuspenseQueryHookResult = ReturnType<typeof useGetScoreDistributionByIdSuspenseQuery>;
+export type GetScoreDistributionByIdQueryResult = Apollo.QueryResult<GetScoreDistributionByIdQuery, GetScoreDistributionByIdQueryVariables>;
+export const GetStatusDistributionByIdDocument = gql`
+    query GetStatusDistributionById($mediaId: Int) {
+  Media(id: $mediaId) {
+    stats {
+      statusDistribution {
+        status
+        amount
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetStatusDistributionByIdQuery__
+ *
+ * To run a query within a React component, call `useGetStatusDistributionByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetStatusDistributionByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetStatusDistributionByIdQuery({
+ *   variables: {
+ *      mediaId: // value for 'mediaId'
+ *   },
+ * });
+ */
+export function useGetStatusDistributionByIdQuery(baseOptions?: Apollo.QueryHookOptions<GetStatusDistributionByIdQuery, GetStatusDistributionByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetStatusDistributionByIdQuery, GetStatusDistributionByIdQueryVariables>(GetStatusDistributionByIdDocument, options);
+      }
+export function useGetStatusDistributionByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetStatusDistributionByIdQuery, GetStatusDistributionByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetStatusDistributionByIdQuery, GetStatusDistributionByIdQueryVariables>(GetStatusDistributionByIdDocument, options);
+        }
+export function useGetStatusDistributionByIdSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetStatusDistributionByIdQuery, GetStatusDistributionByIdQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetStatusDistributionByIdQuery, GetStatusDistributionByIdQueryVariables>(GetStatusDistributionByIdDocument, options);
+        }
+export type GetStatusDistributionByIdQueryHookResult = ReturnType<typeof useGetStatusDistributionByIdQuery>;
+export type GetStatusDistributionByIdLazyQueryHookResult = ReturnType<typeof useGetStatusDistributionByIdLazyQuery>;
+export type GetStatusDistributionByIdSuspenseQueryHookResult = ReturnType<typeof useGetStatusDistributionByIdSuspenseQuery>;
+export type GetStatusDistributionByIdQueryResult = Apollo.QueryResult<GetStatusDistributionByIdQuery, GetStatusDistributionByIdQueryVariables>;
