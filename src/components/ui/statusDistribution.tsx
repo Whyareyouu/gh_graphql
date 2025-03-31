@@ -1,13 +1,14 @@
-"use client";
-
 import React from "react";
 import { Card, CardContent } from "./card";
 import { Line } from "./Line";
-import type { StatusDistribution as Status } from "@/graphql";
-import { MediaListStatus } from "@/graphql";
+import { GET_STATUS_DISTRIBUTION_BY_ID, MediaListStatus } from "@/graphql";
 import { capitalizeFirstLetter } from "@/utils";
 import { Badge } from "./badge";
 import { statusDistributionColors } from "@/utils/helpers";
+import { getClient } from "@/utils/helpers/client";
+
+import type { GetStatusDistributionByIdQuery } from "@/graphql";
+
 // TODO: Подумать над тем, как сделать эту часть более гибкой
 const STATUS_COLORS: { [key in MediaListStatus]: string } = {
   [MediaListStatus.Current]: "#9256F3",
@@ -23,40 +24,45 @@ type AccType = {
   stats: React.ReactElement[];
 };
 
-export const StatusDistribution = ({ statusDistribution = [] }: { statusDistribution: Status[] }) => {
-  const totalAmount = statusDistribution.reduce((acc, status) => acc + (status?.amount ?? 0), 0);
+export const StatusDistribution = async ({ id }: { id: string }) => {
+  const { data } = await getClient().query<GetStatusDistributionByIdQuery>({
+    query: GET_STATUS_DISTRIBUTION_BY_ID,
+    variables: { mediaId: Number(id) },
+  });
 
-  if (!totalAmount) return;
+  const { statusDistribution } = data?.Media?.stats || {};
 
-  const renderContent = React.useMemo(
-    () =>
-      statusDistribution.reduce(
-        (acc: AccType, info) => {
-          const { status, amount } = info;
+  if (!statusDistribution) {
+    return null;
+  }
 
-          if (!status || !amount) return acc;
+  const totalAmount = statusDistribution?.reduce((acc, status) => acc + (status?.amount ?? 0), 0);
 
-          const lineWidth = (amount / totalAmount) * 100;
+  const renderContent = statusDistribution.reduce(
+    (acc: AccType, info) => {
+      const { status, amount } = info || {};
 
-          const statContent = (
-            <div key={status} className="flex gap-2 flex-col ">
-              <Badge colors={statusDistributionColors[status]}>{capitalizeFirstLetter(status)}</Badge>
-              <span style={{ color: STATUS_COLORS[status] }}>{amount}</span>
-            </div>
-          );
+      if (!status || !amount) return acc;
 
-          const progressContent = (
-            <Line key={status} colors={statusDistributionColors[status]} style={{ maxWidth: `${lineWidth}%` }} />
-          );
+      const lineWidth = (amount / totalAmount) * 100;
 
-          return {
-            progress: [...acc.progress, progressContent],
-            stats: [...acc.stats, statContent],
-          };
-        },
-        { progress: [], stats: [] },
-      ),
-    [statusDistribution],
+      const statContent = (
+        <div key={status} className="flex gap-2 flex-col ">
+          <Badge colors={statusDistributionColors[status]}>{capitalizeFirstLetter(status)}</Badge>
+          <span style={{ color: STATUS_COLORS[status] }}>{amount}</span>
+        </div>
+      );
+
+      const progressContent = (
+        <Line key={status} colors={statusDistributionColors[status]} style={{ maxWidth: `${lineWidth}%` }} />
+      );
+
+      return {
+        progress: [...acc.progress, progressContent],
+        stats: [...acc.stats, statContent],
+      };
+    },
+    { progress: [], stats: [] },
   );
 
   return (

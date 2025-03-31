@@ -1,25 +1,34 @@
-// TODO: Возможно стоит переместить логику по получению данных в компонент
-// TODO: найти решение с фиксами типов
-"use client";
-
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "./card";
 import Image from "next/image";
 import { Progress } from "./progress";
 import { TooltipWrapper } from "./tooltip";
-import { ScoreDistribution } from "@/graphql";
+import { GET_SCORE_DISTRIBUTION_BY_ID, ScoreDistribution } from "@/graphql";
+import { getClient } from "@/utils/helpers/client";
+import type { GetScoreDistributionByIdQuery } from "@/graphql";
+// TODO: найти решение с фиксами типов
+export const Score = async ({ id }: { id: string }) => {
+  const { data } = await getClient().query<GetScoreDistributionByIdQuery>({
+    query: GET_SCORE_DISTRIBUTION_BY_ID,
+    variables: { mediaId: Number(id) },
+  });
 
-export const Score = ({ scoreDistribution }: { scoreDistribution: ScoreDistribution[] }) => {
-  const totalAmount = scoreDistribution.reduce((sum, { amount }) => sum + (amount ?? 0), 0);
+  const { scoreDistribution } = data?.Media?.stats || {};
 
-  if (!totalAmount) return;
+  if (!scoreDistribution) {
+    return null;
+  }
 
-  const calculatedScorePercentage = scoreDistribution.map(({ score, amount }) => ({
+  const typedScoreDistribution = scoreDistribution as Required<Omit<ScoreDistribution, "__typename">>[];
+
+  const totalAmount = typedScoreDistribution?.reduce((sum, { amount }) => sum + (amount ?? 0), 0);
+
+  const calculatedScorePercentage = typedScoreDistribution.map(({ score, amount }) => ({
     score: score,
     percentage: (((amount ?? 0) / totalAmount) * 100).toFixed(2),
   }));
 
   const avarageScore = (
-    scoreDistribution.reduce((sum, { score, amount }) => sum + (score ?? 0) * (amount ?? 0), 0) / totalAmount
+    typedScoreDistribution.reduce((sum, { score, amount }) => sum + (score ?? 0) * (amount ?? 0), 0) / totalAmount
   ).toFixed(2);
 
   return (

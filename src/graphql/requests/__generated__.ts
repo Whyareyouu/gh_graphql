@@ -4678,64 +4678,75 @@ export type GetAnimeByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetAnimeByIdQuery = { __typename?: 'Query', Page?: { __typename?: 'Page', media?: Array<{ __typename?: 'Media', seasonYear?: number | null, format?: MediaFormat | null, id: number, status?: MediaStatus | null, duration?: number | null, description?: string | null, episodes?: number | null, genres?: Array<string | null> | null, season?: MediaSeason | null, coverImage?: { __typename?: 'MediaCoverImage', large?: string | null } | null, title?: { __typename?: 'MediaTitle', english?: string | null, romaji?: string | null, native?: string | null } | null, endDate?: { __typename?: 'FuzzyDate', day?: number | null, month?: number | null, year?: number | null } | null, startDate?: { __typename?: 'FuzzyDate', day?: number | null, month?: number | null, year?: number | null } | null, studios?: { __typename?: 'StudioConnection', edges?: Array<{ __typename?: 'StudioEdge', isMain: boolean, node?: { __typename?: 'Studio', name: string } | null } | null> | null } | null, stats?: { __typename?: 'MediaStats', statusDistribution?: Array<{ __typename?: 'StatusDistribution', status?: MediaListStatus | null, amount?: number | null } | null> | null, scoreDistribution?: Array<{ __typename?: 'ScoreDistribution', amount?: number | null, score?: number | null } | null> | null } | null } | null> | null } | null };
+export type GetAnimeByIdQuery = { __typename?: 'Query', Media?: { __typename?: 'Media', seasonYear?: number | null, format?: MediaFormat | null, id: number, status?: MediaStatus | null, duration?: number | null, description?: string | null, episodes?: number | null, genres?: Array<string | null> | null, season?: MediaSeason | null, coverImage?: { __typename?: 'MediaCoverImage', large?: string | null } | null, title?: { __typename?: 'MediaTitle', english?: string | null, romaji?: string | null, native?: string | null } | null, endDate?: { __typename?: 'FuzzyDate', day?: number | null, month?: number | null, year?: number | null } | null, startDate?: { __typename?: 'FuzzyDate', day?: number | null, month?: number | null, year?: number | null } | null, studios?: { __typename?: 'StudioConnection', edges?: Array<{ __typename?: 'StudioEdge', isMain: boolean, node?: { __typename?: 'Studio', name: string } | null } | null> | null } | null } | null };
 
 export type GetAnimeListQueryVariables = Exact<{
   page?: InputMaybe<Scalars['Int']['input']>;
   perPage?: InputMaybe<Scalars['Int']['input']>;
+  studiosIsMain2?: InputMaybe<Scalars['Boolean']['input']>;
 }>;
 
 
-export type GetAnimeListQuery = { __typename?: 'Query', Page?: { __typename?: 'Page', media?: Array<{ __typename?: 'Media', seasonYear?: number | null, format?: MediaFormat | null, id: number, coverImage?: { __typename?: 'MediaCoverImage', large?: string | null } | null, title?: { __typename?: 'MediaTitle', english?: string | null, romaji?: string | null } | null } | null> | null, pageInfo?: { __typename?: 'PageInfo', hasNextPage?: boolean | null, total?: number | null } | null } | null };
+export type GetAnimeListQuery = { __typename?: 'Query', Page?: { __typename?: 'Page', media?: Array<{ __typename?: 'Media', seasonYear?: number | null, format?: MediaFormat | null, id: number, averageScore?: number | null, genres?: Array<string | null> | null, season?: MediaSeason | null, episodes?: number | null, type?: MediaType | null, coverImage?: { __typename?: 'MediaCoverImage', large?: string | null } | null, title?: { __typename?: 'MediaTitle', english?: string | null, romaji?: string | null } | null, studios?: { __typename?: 'StudioConnection', nodes?: Array<{ __typename?: 'Studio', name: string } | null> | null } | null } | null> | null, pageInfo?: { __typename?: 'PageInfo', hasNextPage?: boolean | null, total?: number | null } | null } | null };
+
+export type GetRelationsByIdQueryVariables = Exact<{
+  mediaId?: InputMaybe<Scalars['Int']['input']>;
+  isMain?: InputMaybe<Scalars['Boolean']['input']>;
+}>;
+
+
+export type GetRelationsByIdQuery = { __typename?: 'Query', Media?: { __typename?: 'Media', relations?: { __typename?: 'MediaConnection', nodes?: Array<{ __typename?: 'Media', type?: MediaType | null, seasonYear?: number | null, season?: MediaSeason | null, episodes?: number | null, averageScore?: number | null, format?: MediaFormat | null, id: number, genres?: Array<string | null> | null, coverImage?: { __typename?: 'MediaCoverImage', large?: string | null } | null, title?: { __typename?: 'MediaTitle', english?: string | null, romaji?: string | null } | null, studios?: { __typename?: 'StudioConnection', nodes?: Array<{ __typename?: 'Studio', name: string } | null> | null } | null, startDate?: { __typename?: 'FuzzyDate', year?: number | null } | null } | null> | null } | null } | null };
+
+export type GetScoreDistributionByIdQueryVariables = Exact<{
+  mediaId?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type GetScoreDistributionByIdQuery = { __typename?: 'Query', Media?: { __typename?: 'Media', stats?: { __typename?: 'MediaStats', scoreDistribution?: Array<{ __typename?: 'ScoreDistribution', amount?: number | null, score?: number | null } | null> | null } | null } | null };
+
+export type GetStatusDistributionByIdQueryVariables = Exact<{
+  mediaId?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type GetStatusDistributionByIdQuery = { __typename?: 'Query', Media?: { __typename?: 'Media', stats?: { __typename?: 'MediaStats', statusDistribution?: Array<{ __typename?: 'StatusDistribution', status?: MediaListStatus | null, amount?: number | null } | null> | null } | null } | null };
 
 
 export const GetAnimeByIdDocument = gql`
     query GetAnimeById($mediaId: Int) {
-  Page {
-    media(sort: POPULARITY_DESC, type: ANIME, format: TV, id: $mediaId) {
-      seasonYear
-      format
-      id
-      coverImage {
-        large
-      }
-      title {
-        english
-        romaji
-        native
-      }
-      status
-      endDate {
-        day
-        month
-        year
-      }
-      startDate {
-        day
-        month
-        year
-      }
-      duration
-      description
-      episodes
-      genres
-      season
-      studios {
-        edges {
-          isMain
-          node {
-            name
-          }
-        }
-      }
-      stats {
-        statusDistribution {
-          status
-          amount
-        }
-        scoreDistribution {
-          amount
-          score
+  Media(sort: POPULARITY_DESC, type: ANIME, format: TV, id: $mediaId) {
+    seasonYear
+    format
+    id
+    coverImage {
+      large
+    }
+    title {
+      english
+      romaji
+      native
+    }
+    status
+    endDate {
+      day
+      month
+      year
+    }
+    startDate {
+      day
+      month
+      year
+    }
+    duration
+    description
+    episodes
+    genres
+    season
+    studios {
+      edges {
+        isMain
+        node {
+          name
         }
       }
     }
@@ -4743,7 +4754,7 @@ export const GetAnimeByIdDocument = gql`
 }
     `;
 export const GetAnimeListDocument = gql`
-    query GetAnimeList($page: Int, $perPage: Int) {
+    query GetAnimeList($page: Int, $perPage: Int, $studiosIsMain2: Boolean) {
   Page(perPage: $perPage, page: $page) {
     media(sort: POPULARITY_DESC, type: ANIME, format: TV) {
       seasonYear
@@ -4756,10 +4767,77 @@ export const GetAnimeListDocument = gql`
         english
         romaji
       }
+      averageScore
+      genres
+      season
+      episodes
+      studios(isMain: $studiosIsMain2) {
+        nodes {
+          name
+        }
+      }
+      type
     }
     pageInfo {
       hasNextPage
       total
+    }
+  }
+}
+    `;
+export const GetRelationsByIdDocument = gql`
+    query GetRelationsById($mediaId: Int, $isMain: Boolean) {
+  Media(id: $mediaId) {
+    relations {
+      nodes {
+        coverImage {
+          large
+        }
+        title {
+          english
+          romaji
+        }
+        type
+        seasonYear
+        season
+        episodes
+        averageScore
+        format
+        studios(isMain: $isMain) {
+          nodes {
+            name
+          }
+        }
+        startDate {
+          year
+        }
+        id
+        genres
+      }
+    }
+  }
+}
+    `;
+export const GetScoreDistributionByIdDocument = gql`
+    query GetScoreDistributionById($mediaId: Int) {
+  Media(id: $mediaId) {
+    stats {
+      scoreDistribution {
+        amount
+        score
+      }
+    }
+  }
+}
+    `;
+export const GetStatusDistributionByIdDocument = gql`
+    query GetStatusDistributionById($mediaId: Int) {
+  Media(id: $mediaId) {
+    stats {
+      statusDistribution {
+        status
+        amount
+      }
     }
   }
 }
@@ -4777,6 +4855,15 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     GetAnimeList(variables?: GetAnimeListQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetAnimeListQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetAnimeListQuery>(GetAnimeListDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAnimeList', 'query', variables);
+    },
+    GetRelationsById(variables?: GetRelationsByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetRelationsByIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetRelationsByIdQuery>(GetRelationsByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetRelationsById', 'query', variables);
+    },
+    GetScoreDistributionById(variables?: GetScoreDistributionByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetScoreDistributionByIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetScoreDistributionByIdQuery>(GetScoreDistributionByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetScoreDistributionById', 'query', variables);
+    },
+    GetStatusDistributionById(variables?: GetStatusDistributionByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetStatusDistributionByIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetStatusDistributionByIdQuery>(GetStatusDistributionByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetStatusDistributionById', 'query', variables);
     }
   };
 }
