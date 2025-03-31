@@ -1,3 +1,5 @@
+export * from "./documents/";
+
 export {
   useGetAnimeListQuery,
   useGetAnimeByIdQuery,
@@ -5,6 +7,7 @@ export {
   MediaListStatus,
 } from "./hooks/__generated__";
 
+export type { GetStatusDistributionByIdQuery, GetScoreDistributionByIdQuery } from "./requests/__generated__";
+
 export type { StatusDistribution, ScoreDistribution, GetAnimeListQuery } from "./hooks/__generated__";
 export { MediaStatus } from "./hooks/__generated__";
-export * from "./documents/";
