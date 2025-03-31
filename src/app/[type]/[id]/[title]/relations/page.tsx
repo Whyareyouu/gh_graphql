@@ -1,8 +1,12 @@
 import { EntityCard } from "@/components/ui/entityCard";
-import { useGetRelationsByIdQuery } from "@/graphql";
+import { GET_RALATIONS_BY_ID, useGetRelationsByIdQuery } from "@/graphql";
+import { getClient } from "@/utils/helpers/client";
 
-export const Relations = ({ id }: { id: number }) => {
-  const { data, loading } = useGetRelationsByIdQuery({
+const Relations = async ({ params }: { params: { id: string; title: string } }) => {
+  const { id } = await params;
+  console.log("id", id);
+  const { data, loading } = await getClient().query({
+    query: GET_RALATIONS_BY_ID,
     variables: { mediaId: Number(id), isMain: true },
   });
 
@@ -10,11 +14,11 @@ export const Relations = ({ id }: { id: number }) => {
     return <div>Loading...</div>;
   }
 
-  const [relations] = data?.Page?.media || [];
+  const { relations } = data?.Media || {};
 
   return (
-    <div className="flex flex-wrap gap-3 items-start">
-      {relations?.relations?.nodes?.map((node: any) => (
+    <div className="flex flex-wrap gap-5 items-start">
+      {relations?.nodes?.map((node: any) => (
         <EntityCard
           {...node}
           title={node?.title?.english || node?.title?.romaji}
@@ -30,3 +34,5 @@ export const Relations = ({ id }: { id: number }) => {
     </div>
   );
 };
+
+export default Relations;
