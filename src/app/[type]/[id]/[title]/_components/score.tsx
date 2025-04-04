@@ -1,7 +1,7 @@
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "./card";
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../../../../../components/ui/card";
 import Image from "next/image";
-import { Progress } from "./progress";
-import { TooltipWrapper } from "./tooltip";
+import { Progress } from "../../../../../components/ui/progress";
+import { TooltipWrapper } from "../../../../../components/ui/tooltip";
 import { GET_SCORE_DISTRIBUTION_BY_ID, ScoreDistribution } from "@/graphql";
 import { getClient } from "@/utils/helpers/client";
 import type { GetScoreDistributionByIdQuery } from "@/graphql";

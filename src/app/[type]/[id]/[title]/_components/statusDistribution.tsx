@@ -1,9 +1,9 @@
 import React from "react";
-import { Card, CardContent } from "./card";
-import { Line } from "./Line";
+import { Card, CardContent } from "../../../../../components/ui/card";
+import { Line } from "../../../../../components/ui/Line";
 import { GET_STATUS_DISTRIBUTION_BY_ID, MediaListStatus } from "@/graphql";
 import { capitalizeFirstLetter } from "@/utils";
-import { Badge } from "./badge";
+import { Badge } from "../../../../../components/ui/badge";
 import { statusDistributionColors } from "@/utils/helpers";
 import { getClient } from "@/utils/helpers/client";
 
