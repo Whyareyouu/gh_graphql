@@ -4689,6 +4689,14 @@ export type GetAnimeListQueryVariables = Exact<{
 
 export type GetAnimeListQuery = { __typename?: 'Query', Page?: { __typename?: 'Page', media?: Array<{ __typename?: 'Media', seasonYear?: number | null, format?: MediaFormat | null, id: number, averageScore?: number | null, genres?: Array<string | null> | null, season?: MediaSeason | null, episodes?: number | null, type?: MediaType | null, coverImage?: { __typename?: 'MediaCoverImage', large?: string | null } | null, title?: { __typename?: 'MediaTitle', english?: string | null, romaji?: string | null } | null, studios?: { __typename?: 'StudioConnection', nodes?: Array<{ __typename?: 'Studio', name: string } | null> | null } | null } | null> | null, pageInfo?: { __typename?: 'PageInfo', hasNextPage?: boolean | null, total?: number | null } | null } | null };
 
+export type GetCharactersByIdQueryVariables = Exact<{
+  role?: InputMaybe<CharacterRole>;
+  mediaId?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type GetCharactersByIdQuery = { __typename?: 'Query', Media?: { __typename?: 'Media', characters?: { __typename?: 'CharacterConnection', nodes?: Array<{ __typename?: 'Character', id: number, age?: string | null, name?: { __typename?: 'CharacterName', full?: string | null, native?: string | null } | null, image?: { __typename?: 'CharacterImage', large?: string | null, medium?: string | null } | null } | null> | null } | null } | null };
+
 export type GetRelationsByIdQueryVariables = Exact<{
   mediaId?: InputMaybe<Scalars['Int']['input']>;
   isMain?: InputMaybe<Scalars['Boolean']['input']>;
@@ -4785,6 +4793,26 @@ export const GetAnimeListDocument = gql`
   }
 }
     `;
+export const GetCharactersByIdDocument = gql`
+    query GetCharactersById($role: CharacterRole, $mediaId: Int) {
+  Media(id: $mediaId) {
+    characters(role: $role) {
+      nodes {
+        id
+        name {
+          full
+          native
+        }
+        image {
+          large
+          medium
+        }
+        age
+      }
+    }
+  }
+}
+    `;
 export const GetRelationsByIdDocument = gql`
     query GetRelationsById($mediaId: Int, $isMain: Boolean) {
   Media(id: $mediaId) {
@@ -4855,6 +4883,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     GetAnimeList(variables?: GetAnimeListQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetAnimeListQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetAnimeListQuery>(GetAnimeListDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetAnimeList', 'query', variables);
+    },
+    GetCharactersById(variables?: GetCharactersByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetCharactersByIdQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetCharactersByIdQuery>(GetCharactersByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetCharactersById', 'query', variables);
     },
     GetRelationsById(variables?: GetRelationsByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetRelationsByIdQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetRelationsByIdQuery>(GetRelationsByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetRelationsById', 'query', variables);
