@@ -12,10 +12,11 @@ interface CharacterCardProps {
     large: string;
     medium: string;
   };
+  gender?: string;
   age?: string;
 }
 
-export const CharacterCard = ({ id, name, image, age }: CharacterCardProps) => {
+export const CharacterCard = ({ id, name, image, age, gender }: CharacterCardProps) => {
   return (
     <Link
       href={`/character/${id}/${name.full.toLowerCase().replaceAll(" ", "-")}`}
@@ -28,9 +29,10 @@ export const CharacterCard = ({ id, name, image, age }: CharacterCardProps) => {
         height={100}
         className="w-[80px] h-[100px] object-cover rounded-md"
       />
-      <div className="flex flex-col">
+      <div className="flex flex-col gap-2">
         <h3 className="text-base font-semibold leading-5">{name.full}</h3>
         <span className="text-sm text-muted-foreground">Age: {age || "unknown"}</span>
+        <span className="text-sm text-muted-foreground">Gender: {gender || "unknown"}</span>
       </div>
     </Link>
   );

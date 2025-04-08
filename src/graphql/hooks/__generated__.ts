@@ -4695,7 +4695,7 @@ export type GetCharactersByIdQueryVariables = Exact<{
 }>;
 
 
-export type GetCharactersByIdQuery = { __typename?: 'Query', Media?: { __typename?: 'Media', characters?: { __typename?: 'CharacterConnection', nodes?: Array<{ __typename?: 'Character', id: number, age?: string | null, name?: { __typename?: 'CharacterName', full?: string | null, native?: string | null } | null, image?: { __typename?: 'CharacterImage', large?: string | null, medium?: string | null } | null } | null> | null } | null } | null };
+export type GetCharactersByIdQuery = { __typename?: 'Query', Media?: { __typename?: 'Media', characters?: { __typename?: 'CharacterConnection', nodes?: Array<{ __typename?: 'Character', id: number, age?: string | null, gender?: string | null, name?: { __typename?: 'CharacterName', full?: string | null, native?: string | null } | null, image?: { __typename?: 'CharacterImage', large?: string | null, medium?: string | null } | null } | null> | null } | null } | null };
 
 export type GetRelationsByIdQueryVariables = Exact<{
   mediaId?: InputMaybe<Scalars['Int']['input']>;
@@ -4876,6 +4876,7 @@ export const GetCharactersByIdDocument = gql`
           medium
         }
         age
+        gender
       }
     }
   }
