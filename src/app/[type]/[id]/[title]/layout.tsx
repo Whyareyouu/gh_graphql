@@ -1,6 +1,6 @@
 import { HtmlContent } from "@/components/ui/htmlContent";
 import { Status } from "@/components/ui/status";
-import { GET_ANIME_BY_ID } from "@/graphql";
+import { GET_ANIME_BY_ID, GetAnimeByIdQuery } from "@/graphql";
 import Image from "next/image";
 import { getClient } from "@/utils/helpers/client";
 import { PageTabs } from "./_components/pageNavigation";
@@ -15,17 +15,25 @@ const Layout = async ({
 }) => {
   const { id, type, title } = await params;
 
-  const { data } = await getClient().query({ query: GET_ANIME_BY_ID, variables: { mediaId: Number(id) } });
+  const { data } = await getClient().query<GetAnimeByIdQuery>({
+    query: GET_ANIME_BY_ID,
+    variables: { mediaId: Number(id) },
+  });
 
   const media = data?.Media;
   return (
     <div>
       <div className="flex justify-between gap-8">
         <div>
-          <Image src={media?.coverImage?.large} alt={media?.title?.native} width={225} height={320} />
+          <Image
+            src={media?.coverImage?.large || "/images/notfound.png"}
+            alt={media?.title?.native || "Banner"}
+            width={225}
+            height={320}
+          />
         </div>
         <div className="flex-1">
-          <HtmlContent htmlString={media?.description} />
+          {media?.description ? <HtmlContent htmlString={media?.description} /> : "No description available"}
         </div>
         <div className="flex flex-col gap-1 max-w-sm w-full">
           <div>Romaji: {media?.title?.romaji} </div>
