@@ -4697,6 +4697,13 @@ export type GetCharactersByIdQueryVariables = Exact<{
 
 export type GetCharactersByIdQuery = { __typename?: 'Query', Media?: { __typename?: 'Media', characters?: { __typename?: 'CharacterConnection', nodes?: Array<{ __typename?: 'Character', id: number, age?: string | null, gender?: string | null, name?: { __typename?: 'CharacterName', full?: string | null, native?: string | null } | null, image?: { __typename?: 'CharacterImage', large?: string | null, medium?: string | null } | null } | null> | null } | null } | null };
 
+export type GetOverviewQueryVariables = Exact<{
+  mediaId?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type GetOverviewQuery = { __typename?: 'Query', Media?: { __typename?: 'Media', stats?: { __typename?: 'MediaStats', scoreDistribution?: Array<{ __typename?: 'ScoreDistribution', amount?: number | null, score?: number | null } | null> | null, statusDistribution?: Array<{ __typename?: 'StatusDistribution', status?: MediaListStatus | null, amount?: number | null } | null> | null } | null, characters?: { __typename?: 'CharacterConnection', edges?: Array<{ __typename?: 'CharacterEdge', role?: CharacterRole | null, node?: { __typename?: 'Character', id: number, gender?: string | null, age?: string | null, name?: { __typename?: 'CharacterName', full?: string | null } | null, image?: { __typename?: 'CharacterImage', medium?: string | null } | null } | null } | null> | null } | null, reviews?: { __typename?: 'ReviewConnection', pageInfo?: { __typename?: 'PageInfo', total?: number | null, currentPage?: number | null, lastPage?: number | null, hasNextPage?: boolean | null } | null, nodes?: Array<{ __typename?: 'Review', id: number, summary?: string | null, rating?: number | null, ratingAmount?: number | null, score?: number | null, createdAt: number, user?: { __typename?: 'User', id: number, name: string, avatar?: { __typename?: 'UserAvatar', medium?: string | null } | null } | null } | null> | null } | null, recommendations?: { __typename?: 'RecommendationConnection', nodes?: Array<{ __typename?: 'Recommendation', mediaRecommendation?: { __typename?: 'Media', id: number, format?: MediaFormat | null, status?: MediaStatus | null, episodes?: number | null, averageScore?: number | null, type?: MediaType | null, title?: { __typename?: 'MediaTitle', romaji?: string | null, english?: string | null, native?: string | null } | null, coverImage?: { __typename?: 'MediaCoverImage', large?: string | null } | null } | null } | null> | null } | null } | null };
+
 export type GetRelationsByIdQueryVariables = Exact<{
   mediaId?: InputMaybe<Scalars['Int']['input']>;
   isMain?: InputMaybe<Scalars['Boolean']['input']>;
@@ -4814,6 +4821,81 @@ export const GetCharactersByIdDocument = gql`
   }
 }
     `;
+export const GetOverviewDocument = gql`
+    query GetOverview($mediaId: Int) {
+  Media(id: $mediaId) {
+    stats {
+      scoreDistribution {
+        amount
+        score
+      }
+      statusDistribution {
+        status
+        amount
+      }
+    }
+    characters(sort: [ROLE, RELEVANCE], perPage: 4) {
+      edges {
+        role
+        node {
+          id
+          name {
+            full
+          }
+          image {
+            medium
+          }
+          gender
+          age
+        }
+      }
+    }
+    reviews(sort: RATING_DESC, perPage: 4) {
+      pageInfo {
+        total
+        currentPage
+        lastPage
+        hasNextPage
+      }
+      nodes {
+        id
+        summary
+        rating
+        ratingAmount
+        score
+        createdAt
+        user {
+          id
+          name
+          avatar {
+            medium
+          }
+        }
+      }
+    }
+    recommendations(sort: RATING_DESC, perPage: 4) {
+      nodes {
+        mediaRecommendation {
+          id
+          title {
+            romaji
+            english
+            native
+          }
+          coverImage {
+            large
+          }
+          format
+          status
+          episodes
+          averageScore
+          type
+        }
+      }
+    }
+  }
+}
+    `;
 export const GetRelationsByIdDocument = gql`
     query GetRelationsById($mediaId: Int, $isMain: Boolean) {
   Media(id: $mediaId) {
@@ -4887,6 +4969,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     GetCharactersById(variables?: GetCharactersByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetCharactersByIdQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetCharactersByIdQuery>(GetCharactersByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetCharactersById', 'query', variables);
+    },
+    GetOverview(variables?: GetOverviewQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetOverviewQuery> {
+      return withWrapper((wrappedRequestHeaders) => client.request<GetOverviewQuery>(GetOverviewDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetOverview', 'query', variables);
     },
     GetRelationsById(variables?: GetRelationsByIdQueryVariables, requestHeaders?: GraphQLClientRequestHeaders): Promise<GetRelationsByIdQuery> {
       return withWrapper((wrappedRequestHeaders) => client.request<GetRelationsByIdQuery>(GetRelationsByIdDocument, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'GetRelationsById', 'query', variables);
