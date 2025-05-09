@@ -1,19 +1,11 @@
+"use client";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "../../../../../components/ui/card";
 import Image from "next/image";
 import { Progress } from "../../../../../components/ui/progress";
 import { TooltipWrapper } from "../../../../../components/ui/tooltip";
-import { GET_SCORE_DISTRIBUTION_BY_ID, ScoreDistribution } from "@/graphql";
-import { getClient } from "@/utils/helpers/client";
-import type { GetScoreDistributionByIdQuery } from "@/graphql";
+import { ScoreDistribution } from "@/graphql";
 // TODO: найти решение с фиксами типов
-export const Score = async ({ id }: { id: string }) => {
-  const { data } = await getClient().query<GetScoreDistributionByIdQuery>({
-    query: GET_SCORE_DISTRIBUTION_BY_ID,
-    variables: { mediaId: Number(id) },
-  });
-
-  const { scoreDistribution } = data?.Media?.stats || {};
-
+export const Score = ({ scoreDistribution }: { scoreDistribution: any }) => {
   if (!scoreDistribution) {
     return null;
   }

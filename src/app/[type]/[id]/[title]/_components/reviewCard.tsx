@@ -34,7 +34,7 @@ export const ReviewCard = ({ review }: { review: ReviewCardProps["review"] }) =>
   const date = new Date(review.createdAt * 1000).toLocaleDateString();
 
   return (
-    <Card className="w-full max-w-lg p-4 rounded-2xl shadow-md bg-background border border-border">
+    <Card className="w-full max-w-xl p-4 rounded-2xl shadow-md bg-background border border-border">
       <div className="flex items-start gap-4">
         <Avatar>
           <Image src={review.user.avatar.medium} alt={`${review.user.name}'s avatar`} width={48} height={48} />
