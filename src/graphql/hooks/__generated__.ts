@@ -4689,6 +4689,21 @@ export type GetAnimeListQueryVariables = Exact<{
 
 export type GetAnimeListQuery = { __typename?: 'Query', Page?: { __typename?: 'Page', media?: Array<{ __typename?: 'Media', seasonYear?: number | null, format?: MediaFormat | null, id: number, averageScore?: number | null, genres?: Array<string | null> | null, season?: MediaSeason | null, episodes?: number | null, type?: MediaType | null, coverImage?: { __typename?: 'MediaCoverImage', large?: string | null } | null, title?: { __typename?: 'MediaTitle', english?: string | null, romaji?: string | null } | null, studios?: { __typename?: 'StudioConnection', nodes?: Array<{ __typename?: 'Studio', name: string } | null> | null } | null } | null> | null, pageInfo?: { __typename?: 'PageInfo', hasNextPage?: boolean | null, total?: number | null } | null } | null };
 
+export type GetCharactersByIdQueryVariables = Exact<{
+  role?: InputMaybe<CharacterRole>;
+  mediaId?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type GetCharactersByIdQuery = { __typename?: 'Query', Media?: { __typename?: 'Media', characters?: { __typename?: 'CharacterConnection', nodes?: Array<{ __typename?: 'Character', id: number, age?: string | null, gender?: string | null, name?: { __typename?: 'CharacterName', full?: string | null, native?: string | null } | null, image?: { __typename?: 'CharacterImage', large?: string | null, medium?: string | null } | null } | null> | null } | null } | null };
+
+export type GetOverviewQueryVariables = Exact<{
+  mediaId?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type GetOverviewQuery = { __typename?: 'Query', Media?: { __typename?: 'Media', stats?: { __typename?: 'MediaStats', scoreDistribution?: Array<{ __typename?: 'ScoreDistribution', amount?: number | null, score?: number | null } | null> | null, statusDistribution?: Array<{ __typename?: 'StatusDistribution', status?: MediaListStatus | null, amount?: number | null } | null> | null } | null, characters?: { __typename?: 'CharacterConnection', edges?: Array<{ __typename?: 'CharacterEdge', role?: CharacterRole | null, node?: { __typename?: 'Character', id: number, gender?: string | null, age?: string | null, name?: { __typename?: 'CharacterName', full?: string | null } | null, image?: { __typename?: 'CharacterImage', medium?: string | null } | null } | null } | null> | null } | null, reviews?: { __typename?: 'ReviewConnection', pageInfo?: { __typename?: 'PageInfo', total?: number | null, currentPage?: number | null, lastPage?: number | null, hasNextPage?: boolean | null } | null, nodes?: Array<{ __typename?: 'Review', id: number, summary?: string | null, rating?: number | null, ratingAmount?: number | null, score?: number | null, createdAt: number, user?: { __typename?: 'User', id: number, name: string, avatar?: { __typename?: 'UserAvatar', medium?: string | null } | null } | null } | null> | null } | null, recommendations?: { __typename?: 'RecommendationConnection', nodes?: Array<{ __typename?: 'Recommendation', mediaRecommendation?: { __typename?: 'Media', id: number, format?: MediaFormat | null, status?: MediaStatus | null, episodes?: number | null, averageScore?: number | null, type?: MediaType | null, title?: { __typename?: 'MediaTitle', romaji?: string | null, english?: string | null, native?: string | null } | null, coverImage?: { __typename?: 'MediaCoverImage', large?: string | null } | null } | null } | null> | null } | null } | null };
+
 export type GetRelationsByIdQueryVariables = Exact<{
   mediaId?: InputMaybe<Scalars['Int']['input']>;
   isMain?: InputMaybe<Scalars['Boolean']['input']>;
@@ -4853,6 +4868,169 @@ export type GetAnimeListQueryHookResult = ReturnType<typeof useGetAnimeListQuery
 export type GetAnimeListLazyQueryHookResult = ReturnType<typeof useGetAnimeListLazyQuery>;
 export type GetAnimeListSuspenseQueryHookResult = ReturnType<typeof useGetAnimeListSuspenseQuery>;
 export type GetAnimeListQueryResult = Apollo.QueryResult<GetAnimeListQuery, GetAnimeListQueryVariables>;
+export const GetCharactersByIdDocument = gql`
+    query GetCharactersById($role: CharacterRole, $mediaId: Int) {
+  Media(id: $mediaId) {
+    characters(role: $role) {
+      nodes {
+        id
+        name {
+          full
+          native
+        }
+        image {
+          large
+          medium
+        }
+        age
+        gender
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetCharactersByIdQuery__
+ *
+ * To run a query within a React component, call `useGetCharactersByIdQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetCharactersByIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetCharactersByIdQuery({
+ *   variables: {
+ *      role: // value for 'role'
+ *      mediaId: // value for 'mediaId'
+ *   },
+ * });
+ */
+export function useGetCharactersByIdQuery(baseOptions?: Apollo.QueryHookOptions<GetCharactersByIdQuery, GetCharactersByIdQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetCharactersByIdQuery, GetCharactersByIdQueryVariables>(GetCharactersByIdDocument, options);
+      }
+export function useGetCharactersByIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetCharactersByIdQuery, GetCharactersByIdQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetCharactersByIdQuery, GetCharactersByIdQueryVariables>(GetCharactersByIdDocument, options);
+        }
+export function useGetCharactersByIdSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetCharactersByIdQuery, GetCharactersByIdQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetCharactersByIdQuery, GetCharactersByIdQueryVariables>(GetCharactersByIdDocument, options);
+        }
+export type GetCharactersByIdQueryHookResult = ReturnType<typeof useGetCharactersByIdQuery>;
+export type GetCharactersByIdLazyQueryHookResult = ReturnType<typeof useGetCharactersByIdLazyQuery>;
+export type GetCharactersByIdSuspenseQueryHookResult = ReturnType<typeof useGetCharactersByIdSuspenseQuery>;
+export type GetCharactersByIdQueryResult = Apollo.QueryResult<GetCharactersByIdQuery, GetCharactersByIdQueryVariables>;
+export const GetOverviewDocument = gql`
+    query GetOverview($mediaId: Int) {
+  Media(id: $mediaId) {
+    stats {
+      scoreDistribution {
+        amount
+        score
+      }
+      statusDistribution {
+        status
+        amount
+      }
+    }
+    characters(sort: [ROLE, RELEVANCE], perPage: 4) {
+      edges {
+        role
+        node {
+          id
+          name {
+            full
+          }
+          image {
+            medium
+          }
+          gender
+          age
+        }
+      }
+    }
+    reviews(sort: RATING_DESC, perPage: 4) {
+      pageInfo {
+        total
+        currentPage
+        lastPage
+        hasNextPage
+      }
+      nodes {
+        id
+        summary
+        rating
+        ratingAmount
+        score
+        createdAt
+        user {
+          id
+          name
+          avatar {
+            medium
+          }
+        }
+      }
+    }
+    recommendations(sort: RATING_DESC, perPage: 6) {
+      nodes {
+        mediaRecommendation {
+          id
+          title {
+            romaji
+            english
+            native
+          }
+          coverImage {
+            large
+          }
+          format
+          status
+          episodes
+          averageScore
+          type
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetOverviewQuery__
+ *
+ * To run a query within a React component, call `useGetOverviewQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetOverviewQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetOverviewQuery({
+ *   variables: {
+ *      mediaId: // value for 'mediaId'
+ *   },
+ * });
+ */
+export function useGetOverviewQuery(baseOptions?: Apollo.QueryHookOptions<GetOverviewQuery, GetOverviewQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetOverviewQuery, GetOverviewQueryVariables>(GetOverviewDocument, options);
+      }
+export function useGetOverviewLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetOverviewQuery, GetOverviewQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetOverviewQuery, GetOverviewQueryVariables>(GetOverviewDocument, options);
+        }
+export function useGetOverviewSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetOverviewQuery, GetOverviewQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetOverviewQuery, GetOverviewQueryVariables>(GetOverviewDocument, options);
+        }
+export type GetOverviewQueryHookResult = ReturnType<typeof useGetOverviewQuery>;
+export type GetOverviewLazyQueryHookResult = ReturnType<typeof useGetOverviewLazyQuery>;
+export type GetOverviewSuspenseQueryHookResult = ReturnType<typeof useGetOverviewSuspenseQuery>;
+export type GetOverviewQueryResult = Apollo.QueryResult<GetOverviewQuery, GetOverviewQueryVariables>;
 export const GetRelationsByIdDocument = gql`
     query GetRelationsById($mediaId: Int, $isMain: Boolean) {
   Media(id: $mediaId) {

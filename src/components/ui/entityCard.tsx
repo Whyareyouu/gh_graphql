@@ -4,63 +4,127 @@ import Image from "next/image";
 import { HoverCardWrapper } from "./hover-card";
 import { capitalizeFirstLetter, pluralize } from "@/utils";
 import { Badge } from "./badge";
+import type { MediaType, MediaFormat, MediaTitle, MediaCoverImage, FuzzyDate } from "@/graphql";
 
-// TODO: Порефачить карточку, поправить типы и всю портянку
+const ANIME_TYPE = "ANIME" as const;
+const MANGA_TYPE = "MANGA" as const;
 
-interface AnimeCardProps {
-  title: string;
-  coverImage: string;
-  seasonYear: number;
-  format: string;
+type Media = {
   id: number;
-  season: string;
-  meanScore: number;
-  studio: {
-    nodes: {
+  title?: MediaTitle | null;
+  coverImage?: MediaCoverImage | null;
+  seasonYear?: number | null;
+  format?: MediaFormat | null;
+  season?: string | null;
+  averageScore?: number | null;
+  episodes?: number | null;
+  chapters?: number | null;
+  genres?: (string | null)[] | null;
+  studios?: {
+    nodes?: {
       name: string;
-    }[];
-  };
-  genres: string[];
-  episodes: number;
-  avarageScore: number;
-  type: "MANGA" | "ANIME";
-  startDate?: string;
+    }[] | null;
+  } | null;
+  type?: MediaType | null;
+  startDate?: FuzzyDate | null;
+};
+
+interface EntityCardProps {
+  media: Media;
+  withHover?: boolean;
+  size?: "sm" | "md" | "lg";
 }
 
-export const EntityCard = (props: AnimeCardProps) => {
-  const { title, coverImage, seasonYear, format, season, avarageScore, episodes, genres, studio, id, type, startDate } =
-    props;
+const sizeConfig = {
+  sm: {
+    image: { width: 100, height: 150 },
+    container: "max-w-[100px]",
+  },
+  md: {
+    image: { width: 186, height: 265 },
+    container: "max-w-48",
+  },
+  lg: {
+    image: { width: 300, height: 425 },
+    container: "max-w-[300px]",
+  },
+};
+
+export const EntityCard = ({ media, withHover = true, size = "md" }: EntityCardProps) => {
+  const {
+    title,
+    coverImage,
+    seasonYear,
+    format,
+    season,
+    averageScore,
+    episodes,
+    chapters,
+    genres,
+    studios,
+    id,
+    type,
+    startDate,
+  } = media;
+
+  const config = sizeConfig[size];
+  const displayTitle = title?.english || title?.romaji || "";
+  const coverImageUrl = coverImage?.large || "";
+  const mediaType = type || ANIME_TYPE;
 
   const hoverCardContent = (
     <div className="flex flex-col gap-3">
       <div className="flex justify-between">
         <span>
-          {type === "ANIME" ? `${capitalizeFirstLetter(season)} ${seasonYear}` : `Publishing Since ${startDate}`}
+          {mediaType === ANIME_TYPE
+            ? `${capitalizeFirstLetter(season || "")} ${seasonYear}`
+            : `Publishing Since ${startDate?.year}`}
         </span>
-        <span>{avarageScore}%</span>
+        <span>{averageScore}%</span>
       </div>
       <div className="flex flex-col">
-        <span>{studio?.nodes?.[0]?.name}</span>
+        <span>{studios?.nodes?.[0]?.name}</span>
         <div className="flex">
-          {capitalizeFirstLetter(format)}
-          {episodes && ` • ${pluralize(episodes, "episode")}`}
+          {format && capitalizeFirstLetter(format)}
+          {mediaType === ANIME_TYPE && episodes && ` • ${pluralize(episodes, "episode")}`}
+          {mediaType === MANGA_TYPE && chapters && ` • ${pluralize(chapters, "chapter")}`}
         </div>
       </div>
-      <div className="flex gap-2 flex-wrap">{genres?.map((genre) => <Badge key={genre}>{genre}</Badge>)}</div>
+      <div className="flex gap-2 flex-wrap">
+        {genres?.map((genre: string | null) => genre && <Badge key={genre}>{genre}</Badge>)}
+      </div>
     </div>
   );
 
+  const renderHoverCard = (content: React.ReactNode) => {
+    if (withHover) {
+      return (
+        <HoverCardWrapper content={hoverCardContent} side="right" sideOffset={10}>
+          {content}
+        </HoverCardWrapper>
+      );
+    }
+    return content;
+  };
+
   return (
-    <div className="max-w-48 w-full">
-      <HoverCardWrapper content={hoverCardContent} side="right" sideOffset={10}>
+    <div className={config.container}>
+      {renderHoverCard(
         <Link
-          href={`/${type.toLowerCase()}/${id}/${title.toLowerCase().replaceAll(" ", "-")}`}
+          href={`/${mediaType.toLowerCase()}/${id}/${displayTitle.toLowerCase().replaceAll(" ", "-")}`}
           className="flex flex-col gap-2 justify-between"
         >
-          <Image src={coverImage} alt={title} width={186} height={265} className="w-[186px] h-[265px]" />
-          <h2>{title}</h2>
-        </Link>
-      </HoverCardWrapper>
+          <Image
+            src={coverImageUrl}
+            alt={displayTitle}
+            width={config.image.width}
+            height={config.image.height}
+            className={`w-[${config.image.width}px] h-[${config.image.height}px]`}
+          />
+          <h2 className="line-clamp-2">{displayTitle}</h2>
+        </Link>,
+      )}
     </div>
   );
 };
+

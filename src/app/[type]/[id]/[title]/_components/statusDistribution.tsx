@@ -1,15 +1,13 @@
+"use client";
+
 import React from "react";
-import { Card, CardContent } from "./card";
-import { Line } from "./Line";
-import { GET_STATUS_DISTRIBUTION_BY_ID, MediaListStatus } from "@/graphql";
+import { Card, CardContent } from "../../../../../components/ui/card";
+import { Line } from "../../../../../components/ui/Line";
+import { MediaListStatus } from "@/graphql";
 import { capitalizeFirstLetter } from "@/utils";
-import { Badge } from "./badge";
+import { Badge } from "../../../../../components/ui/badge";
 import { statusDistributionColors } from "@/utils/helpers";
-import { getClient } from "@/utils/helpers/client";
 
-import type { GetStatusDistributionByIdQuery } from "@/graphql";
-
-// TODO: Подумать над тем, как сделать эту часть более гибкой
 const STATUS_COLORS: { [key in MediaListStatus]: string } = {
   [MediaListStatus.Current]: "#9256F3",
   [MediaListStatus.Planning]: "#02A9FF",
@@ -24,14 +22,7 @@ type AccType = {
   stats: React.ReactElement[];
 };
 
-export const StatusDistribution = async ({ id }: { id: string }) => {
-  const { data } = await getClient().query<GetStatusDistributionByIdQuery>({
-    query: GET_STATUS_DISTRIBUTION_BY_ID,
-    variables: { mediaId: Number(id) },
-  });
-
-  const { statusDistribution } = data?.Media?.stats || {};
-
+export const StatusDistribution = ({ statusDistribution }: { statusDistribution: any }) => {
   if (!statusDistribution) {
     return null;
   }
