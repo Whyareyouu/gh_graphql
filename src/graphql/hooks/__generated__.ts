@@ -4975,7 +4975,7 @@ export const GetOverviewDocument = gql`
         }
       }
     }
-    recommendations(sort: RATING_DESC, perPage: 4) {
+    recommendations(sort: RATING_DESC, perPage: 6) {
       nodes {
         mediaRecommendation {
           id

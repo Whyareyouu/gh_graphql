@@ -6,9 +6,17 @@ const config: CodegenConfig = {
   generates: {
     "./src/graphql/hooks/__generated__.ts": {
       plugins: ["typescript", "typescript-operations", "typescript-react-apollo"],
+      presetConfig: {
+        fragmentMasking: false,
+        avoidOptionals: true,
+      },
     },
     "./src/graphql/requests/__generated__.ts": {
       plugins: ["typescript", "typescript-operations", "typescript-graphql-request"],
+      presetConfig: {
+        fragmentMasking: false,
+        avoidOptionals: true,
+      },
     },
   },
   ignoreNoDocuments: true,

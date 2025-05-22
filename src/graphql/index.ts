@@ -12,6 +12,12 @@ export type {
   GetScoreDistributionByIdQuery,
   GetCharactersByIdQuery,
   GetAnimeByIdQuery,
+  MediaTitle,
+  MediaCoverImage,
+  MediaType,
+  MediaFormat,
+  MediaSeason,
+  FuzzyDate,
 } from "./requests/__generated__";
 
 export type { StatusDistribution, ScoreDistribution, GetAnimeListQuery } from "./hooks/__generated__";

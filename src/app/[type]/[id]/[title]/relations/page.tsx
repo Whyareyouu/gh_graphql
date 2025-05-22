@@ -20,15 +20,8 @@ const Relations = async ({ params }: { params: { id: string; title: string } }) 
     <div className="flex flex-wrap gap-5 items-start">
       {relations?.nodes?.map((node: any) => (
         <EntityCard
-          {...node}
-          title={node?.title?.english || node?.title?.romaji}
-          coverImage={node?.coverImage?.large}
-          seasonYear={node?.seasonYear}
-          format={node?.format}
+          media={node}
           key={node?.id}
-          avarageScore={node?.averageScore}
-          id={node?.id}
-          startDate={node?.startDate?.year}
         />
       ))}
     </div>
