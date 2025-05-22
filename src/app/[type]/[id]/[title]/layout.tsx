@@ -1,6 +1,7 @@
 import { HtmlContent } from "@/components/ui/htmlContent";
 import { Status } from "@/components/ui/status";
 import { GET_ANIME_BY_ID, GetAnimeByIdQuery } from "@/graphql";
+import { TDate } from "@/utils/helpers";
 import Image from "next/image";
 import { getClient } from "@/utils/helpers/client";
 import { PageTabs } from "./_components/pageNavigation";
@@ -43,7 +44,7 @@ const Layout = async ({
           <div>Episode&nbsp;duration: {media?.duration}</div>
           <div>
             Status:
-            <Status status={media?.status} date={{ startDate: media?.startDate, endDate: media?.endDate }} />
+            <Status status={media?.status} date={{startDate: (media?.startDate as TDate), endDate: (media?.endDate as TDate)}}  />
           </div>
           <div>Episodes: {media?.episodes}</div>
           <div>Format: {media?.format}</div>

@@ -15,6 +15,6 @@ export const getMonthNameByNumber = (month: TDate["month"]): string => {
 
 export const getFullDate = (date: TDate): string => {
   const validationResult = dateSchema.safeParse(date);
-  if (!validationResult.success) return "";
+  if (!validationResult.success) return "unknown";
   return `${date.day} ${getMonthNameByNumber(date.month)}, ${date.year}`;
 };

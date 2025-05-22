@@ -7,15 +7,16 @@ import { ReviewCard } from "./_components/reviewCard";
 import { CharacterCard } from "./characters/_components/characterCard";
 import { EntityCard } from "@/components/ui/entityCard";
 
-// TODO: Refactor card
 
 const EntityPage = async ({ params }: { params: { id: string; title: string } }) => {
   const { id } = await params;
 
   const { data } = await getClient().query({ query: GET_OVERVIEW, variables: { mediaId: Number(id) } });
+
   const reviews = data?.Media?.reviews?.nodes ?? [];
   const characters = data?.Media?.characters?.edges ?? [];
   const recommendations = data?.Media?.recommendations?.nodes ?? [];
+  
   console.log(data);
   return (
     <div className="flex gap-4 w-full h-full">
@@ -42,9 +43,8 @@ const EntityPage = async ({ params }: { params: { id: string; title: string } })
               recommendations.map((recommendation: any) => (
                 <EntityCard
                   key={recommendation.id}
-                  {...recommendation?.mediaRecommendation}
-                  title={recommendation?.mediaRecommendation?.title.english}
-                  coverImage={recommendation?.mediaRecommendation?.coverImage.large}
+                  media={recommendation?.mediaRecommendation}
+                  size="lg"
                   withHover={false}
                 />
               ))
