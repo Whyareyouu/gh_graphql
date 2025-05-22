@@ -6,9 +6,6 @@ import { capitalizeFirstLetter, pluralize } from "@/utils";
 import { Badge } from "./badge";
 import type { MediaType, MediaFormat, MediaTitle, MediaCoverImage, FuzzyDate } from "@/graphql";
 
-// TODO: Порефачить карточку, поправить типы и всю портянку
-// Сделать карточку более гибкой, возможность передавать размер и тип MANGA | ANIME
-
 const ANIME_TYPE = "ANIME" as const;
 const MANGA_TYPE = "MANGA" as const;
 
