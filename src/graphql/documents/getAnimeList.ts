@@ -1,9 +1,9 @@
 import { gql } from "@apollo/client";
 
 export const GET_ANIME_LIST = gql`
-  query GetAnimeList($page: Int, $perPage: Int, $studiosIsMain2: Boolean) {
+  query GetAnimeList($page: Int, $perPage: Int, $studiosIsMain2: Boolean, $sort: [MediaSort], $search: String,$type: MediaType) {
     Page(perPage: $perPage, page: $page) {
-      media(sort: POPULARITY_DESC, type: ANIME, format: TV) {
+      media(sort: $sort, search: $search, type: $type) {
         seasonYear
         format
         id

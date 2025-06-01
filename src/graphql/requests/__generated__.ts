@@ -4684,6 +4684,9 @@ export type GetAnimeListQueryVariables = Exact<{
   page?: InputMaybe<Scalars['Int']['input']>;
   perPage?: InputMaybe<Scalars['Int']['input']>;
   studiosIsMain2?: InputMaybe<Scalars['Boolean']['input']>;
+  sort?: InputMaybe<Array<InputMaybe<MediaSort>> | InputMaybe<MediaSort>>;
+  search?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<MediaType>;
 }>;
 
 
@@ -4769,9 +4772,9 @@ export const GetAnimeByIdDocument = gql`
 }
     `;
 export const GetAnimeListDocument = gql`
-    query GetAnimeList($page: Int, $perPage: Int, $studiosIsMain2: Boolean) {
+    query GetAnimeList($page: Int, $perPage: Int, $studiosIsMain2: Boolean, $sort: [MediaSort], $search: String, $type: MediaType) {
   Page(perPage: $perPage, page: $page) {
-    media(sort: POPULARITY_DESC, type: ANIME, format: TV) {
+    media(sort: $sort, search: $search, type: $type) {
       seasonYear
       format
       id

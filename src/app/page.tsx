@@ -1,17 +1,16 @@
 "use client";
-// import { useGetAnimeListQuery } from "@/graphql";
 import { EntityCard } from "@/components/ui/entityCard";
 import { GET_ANIME_LIST } from "@/graphql";
 import { useSuspenseQuery } from "@apollo/client";
 import type { GetAnimeListQuery } from "@/graphql/requests/__generated__";
+import { format } from "path";
 
 export default function Home() {
-  // const { data, loading } = useGetAnimeListQuery();
-
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  // }
-  const { data } = useSuspenseQuery<GetAnimeListQuery>(GET_ANIME_LIST);
+  const { data } = useSuspenseQuery<GetAnimeListQuery>(GET_ANIME_LIST, {variables: {
+    type: "ANIME",
+    sort: "POPULARITY_DESC",
+    format: "TV",
+  }});
 
   return (
     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 p-4">

@@ -7,6 +7,7 @@ import { ReviewCard } from "./_components/reviewCard";
 import { CharacterCard } from "./characters/_components/characterCard";
 import { EntityCard } from "@/components/ui/entityCard";
 
+// TODO: Мб вынести компач с нотфаундом?) Поправить типы!
 
 const EntityPage = async ({ params }: { params: { id: string; title: string } }) => {
   const { id } = await params;
@@ -16,13 +17,13 @@ const EntityPage = async ({ params }: { params: { id: string; title: string } })
   const reviews = data?.Media?.reviews?.nodes ?? [];
   const characters = data?.Media?.characters?.edges ?? [];
   const recommendations = data?.Media?.recommendations?.nodes ?? [];
-  
+
   console.log(data);
   return (
     <div className="flex gap-4 w-full h-full">
       <div className="flex flex-col gap-6">
-        <StatusDistribution statusDistribution={data?.Media?.stats?.statusDistribution || {}} />
-        <Score scoreDistribution={data?.Media?.stats?.scoreDistribution || {}} />
+        <StatusDistribution statusDistribution={data?.Media?.stats?.statusDistribution ?? {}} />
+        <Score scoreDistribution={data?.Media?.stats?.scoreDistribution ?? {}} />
       </div>
       <Separator orientation="vertical" className="w-[3px] h-[unset]" />
       <div className="flex flex-col gap-6 w-full">

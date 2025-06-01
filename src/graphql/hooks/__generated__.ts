@@ -4684,6 +4684,9 @@ export type GetAnimeListQueryVariables = Exact<{
   page?: InputMaybe<Scalars['Int']['input']>;
   perPage?: InputMaybe<Scalars['Int']['input']>;
   studiosIsMain2?: InputMaybe<Scalars['Boolean']['input']>;
+  sort?: InputMaybe<Array<InputMaybe<MediaSort>> | InputMaybe<MediaSort>>;
+  search?: InputMaybe<Scalars['String']['input']>;
+  type?: InputMaybe<MediaType>;
 }>;
 
 
@@ -4802,9 +4805,9 @@ export type GetAnimeByIdLazyQueryHookResult = ReturnType<typeof useGetAnimeByIdL
 export type GetAnimeByIdSuspenseQueryHookResult = ReturnType<typeof useGetAnimeByIdSuspenseQuery>;
 export type GetAnimeByIdQueryResult = Apollo.QueryResult<GetAnimeByIdQuery, GetAnimeByIdQueryVariables>;
 export const GetAnimeListDocument = gql`
-    query GetAnimeList($page: Int, $perPage: Int, $studiosIsMain2: Boolean) {
+    query GetAnimeList($page: Int, $perPage: Int, $studiosIsMain2: Boolean, $sort: [MediaSort], $search: String, $type: MediaType) {
   Page(perPage: $perPage, page: $page) {
-    media(sort: POPULARITY_DESC, type: ANIME, format: TV) {
+    media(sort: $sort, search: $search, type: $type) {
       seasonYear
       format
       id
@@ -4849,6 +4852,9 @@ export const GetAnimeListDocument = gql`
  *      page: // value for 'page'
  *      perPage: // value for 'perPage'
  *      studiosIsMain2: // value for 'studiosIsMain2'
+ *      sort: // value for 'sort'
+ *      search: // value for 'search'
+ *      type: // value for 'type'
  *   },
  * });
  */
